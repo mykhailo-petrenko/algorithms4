@@ -1,4 +1,6 @@
-public class FixedSizeStack<T> {
+import java.util.Iterator;
+
+public class FixedSizeStack<T> implements Iterable<T> {
 
     private int size;
     private T[] stack;
@@ -21,7 +23,7 @@ public class FixedSizeStack<T> {
         T el = stack[--N];
         stack[N] = null;
 
-        if (N <= (size/2)) {
+        if (N > 0 && N <= (size/4)) {
             this.resizeStack(size/2);
         }
 
@@ -41,6 +43,11 @@ public class FixedSizeStack<T> {
         return "Size = " + size + "; N = " + N;
     }
 
+    @Override
+    public Iterator<T> iterator() {
+        return new ReverseStackIterator();
+    }
+
     private void resizeStack(int newSize) {
         T[] buffer = (T[]) new Object[newSize];
         int n = Math.min(newSize, size);
@@ -55,6 +62,24 @@ public class FixedSizeStack<T> {
 
         this.stack = buffer;
         this.size = newSize;
+    }
+
+    private class ReverseStackIterator implements Iterator<T> {
+        private int i;
+
+        ReverseStackIterator() {
+            this.i = N;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return i > 0;
+        }
+
+        @Override
+        public T next() {
+            return stack[--i];
+        }
     }
 
 }

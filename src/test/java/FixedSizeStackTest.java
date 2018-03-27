@@ -56,4 +56,23 @@ public class FixedSizeStackTest {
 
         System.out.println(s);
     }
+
+    @Test()
+    public void iterator() {
+        FixedSizeStack<Integer> s = new FixedSizeStack(4);
+
+        s.push(1);
+        s.push(2);
+        s.push(3);
+        s.push(4);
+
+        int[] actual = new int[4];
+        int[] expected = {4, 3, 2, 1};
+        int i = 0;
+        for(int number: s) {
+            actual[i++] = number;
+        }
+
+        Assert.assertArrayEquals(actual, expected);
+    }
 }
