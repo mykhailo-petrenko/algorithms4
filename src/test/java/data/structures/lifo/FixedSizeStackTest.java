@@ -7,7 +7,7 @@ public class FixedSizeStackTest {
 
     @Test()
     public void lastInFirstOut() {
-        FixedSizeStack<String> s = new FixedSizeStack(4);
+        FixedSizeStack<String> s = new FixedSizeStack<>(4);
 
         s.push("uno");
         s.push("dos");
@@ -20,29 +20,29 @@ public class FixedSizeStackTest {
 
     @Test()
     public void shouldIncreaseOnOverflow() {
-        FixedSizeStack<Integer> s = new FixedSizeStack(1);
+        FixedSizeStack<Integer> s = new FixedSizeStack<>(1);
 
         s.push(1);
-        Assert.assertEquals(s.getSize(), 1);
+        Assert.assertEquals(s.size(), 1);
 
         s.push(2);
-        Assert.assertEquals(s.getSize(), 2);
+        Assert.assertEquals(s.size(), 2);
 
         s.push(3);
-        Assert.assertEquals(s.getSize(), 4);
+        Assert.assertEquals(s.size(), 4);
 
         s.push(4);
         s.push(4);
-        Assert.assertEquals(s.getSize(), 8);
+        Assert.assertEquals(s.size(), 8);
 
         System.out.println(s);
     }
 
     @Test()
     public void shouldDecrease() {
-        FixedSizeStack<Integer> s = new FixedSizeStack(5);
+        FixedSizeStack<Integer> s = new FixedSizeStack<>(5);
 
-        Assert.assertEquals(s.getSize(), 5);
+        Assert.assertEquals(s.size(), 5);
 
         s.push(1);
         s.push(2);
@@ -54,14 +54,14 @@ public class FixedSizeStackTest {
             s.pop();
         }
 
-        Assert.assertEquals(s.getSize(), 2);
+        Assert.assertEquals(s.size(), 2);
 
         System.out.println(s);
     }
 
     @Test()
     public void iterator() {
-        FixedSizeStack<Integer> s = new FixedSizeStack(4);
+        FixedSizeStack<Integer> s = new FixedSizeStack<>(4);
 
         s.push(1);
         s.push(2);

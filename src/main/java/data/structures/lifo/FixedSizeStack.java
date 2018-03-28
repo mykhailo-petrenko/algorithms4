@@ -2,7 +2,7 @@ package data.structures.lifo;
 
 import java.util.Iterator;
 
-public class FixedSizeStack<T> implements Iterable<T> {
+public class FixedSizeStack<T> implements Stack<T>, Iterable<T> {
 
     private int size;
     private T[] stack;
@@ -14,6 +14,7 @@ public class FixedSizeStack<T> implements Iterable<T> {
         this.N = 0;
     }
 
+    @Override()
     public void push(T item) {
         if (N==size) {
             this.resizeStack(size * 2);
@@ -21,6 +22,7 @@ public class FixedSizeStack<T> implements Iterable<T> {
         stack[N++] = item;
     }
 
+    @Override()
     public T pop() {
         T el = stack[--N];
         stack[N] = null;
@@ -32,11 +34,13 @@ public class FixedSizeStack<T> implements Iterable<T> {
         return el;
     }
 
+    @Override()
     public boolean isEmpty() {
         return N==0;
     }
 
-    public int getSize() {
+    @Override()
+    public int size() {
         return size;
     }
 
