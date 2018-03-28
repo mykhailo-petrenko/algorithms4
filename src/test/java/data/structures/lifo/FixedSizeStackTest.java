@@ -1,3 +1,5 @@
+package data.structures.lifo;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -52,7 +54,7 @@ public class FixedSizeStackTest {
             s.pop();
         }
 
-        Assert.assertEquals(s.getSize(), 0);
+        Assert.assertEquals(s.getSize(), 2);
 
         System.out.println(s);
     }

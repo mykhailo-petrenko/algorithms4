@@ -1,3 +1,5 @@
+package data.structures.lifo;
+
 import java.util.Iterator;
 
 public class FixedSizeStack<T> implements Iterable<T> {
