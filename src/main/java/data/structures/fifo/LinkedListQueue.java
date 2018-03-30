@@ -12,7 +12,7 @@ public class LinkedListQueue<T> implements Queue<T>, Iterable<T> {
         Node next;
     }
 
-    LinkedListQueue() {
+    public LinkedListQueue() {
         N = 0;
         first = null;
         last = null;

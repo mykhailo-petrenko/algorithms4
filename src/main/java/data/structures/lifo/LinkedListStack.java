@@ -11,7 +11,7 @@ public class LinkedListStack<T> implements Stack<T>, Iterable<T> {
         Node next;
     }
 
-    LinkedListStack() {
+    public LinkedListStack() {
         first = null;
         N = 0;
     }
