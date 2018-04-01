@@ -1,4 +1,4 @@
-package data.structures.lifo;
+package data.structures.list.lifo;
 
 public interface Stack<T> {
     void push(T item);

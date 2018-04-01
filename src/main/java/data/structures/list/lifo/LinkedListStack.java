@@ -1,4 +1,4 @@
-package data.structures.lifo;
+package data.structures.list.lifo;
 
 import java.util.Iterator;
 

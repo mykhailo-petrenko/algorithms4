@@ -1,13 +1,13 @@
-package data.structures.lifo;
+package data.structures.list.lifo;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-public class FixedSizeStackTest {
+public class LinkedListStackTest {
 
     @Test()
     public void lastInFirstOut() {
-        FixedSizeStack<String> s = new FixedSizeStack<>(4);
+        LinkedListStack<String> s = new LinkedListStack<>();
 
         s.push("uno");
         s.push("dos");
@@ -20,7 +20,7 @@ public class FixedSizeStackTest {
 
     @Test()
     public void shouldIncreaseOnOverflow() {
-        FixedSizeStack<Integer> s = new FixedSizeStack<>(1);
+        LinkedListStack<Integer> s = new LinkedListStack<>();
 
         s.push(1);
         Assert.assertEquals(s.size(), 1);
@@ -29,20 +29,20 @@ public class FixedSizeStackTest {
         Assert.assertEquals(s.size(), 2);
 
         s.push(3);
-        Assert.assertEquals(s.size(), 4);
+        Assert.assertEquals(s.size(), 3);
 
         s.push(4);
         s.push(4);
-        Assert.assertEquals(s.size(), 8);
+        Assert.assertEquals(s.size(), 5);
 
         System.out.println(s);
     }
 
     @Test()
     public void shouldDecrease() {
-        FixedSizeStack<Integer> s = new FixedSizeStack<>(5);
+        LinkedListStack<Integer> s = new LinkedListStack<>();
 
-        Assert.assertEquals(s.size(), 5);
+        Assert.assertEquals(s.size(), 0);
 
         s.push(1);
         s.push(2);
@@ -54,14 +54,14 @@ public class FixedSizeStackTest {
             s.pop();
         }
 
-        Assert.assertEquals(s.size(), 2);
+        Assert.assertEquals(s.size(), 0);
 
         System.out.println(s);
     }
 
     @Test()
     public void iterator() {
-        FixedSizeStack<Integer> s = new FixedSizeStack<>(4);
+        LinkedListStack<Integer> s = new LinkedListStack<>();
 
         s.push(1);
         s.push(2);

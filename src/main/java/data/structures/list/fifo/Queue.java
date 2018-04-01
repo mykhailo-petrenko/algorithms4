@@ -1,4 +1,4 @@
-package data.structures.fifo;
+package data.structures.list.fifo;
 
 public interface Queue<T> {
     void enqueue(T item);

@@ -1,4 +1,4 @@
-package data.structures.fifo;
+package data.structures.list.fifo;
 
 import org.junit.Assert;
 import org.junit.Test;

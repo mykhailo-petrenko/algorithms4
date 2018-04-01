@@ -1,7 +1,7 @@
 package demo.tasks.c1_3;
 
-import data.structures.lifo.LinkedListStack;
-import data.structures.lifo.Stack;
+import data.structures.list.lifo.LinkedListStack;
+import data.structures.list.lifo.Stack;
 
 /**
  * Check parentheses balance using stack
