@@ -2,11 +2,19 @@ package data.structures.list.deque;
 
 import java.util.Iterator;
 
+/**
+ * Deque - bidirectional queue ans stack
+ * @param <Item>
+ */
 public class LinkedListDeque<Item> implements Deque<Item>, Iterable<Item> {
     private class Node {
         Item item;
         Node prev;
         Node next;
+
+        Node(Item item) {
+            this.item = item;
+        }
     }
 
     private Node first;
@@ -27,42 +35,107 @@ public class LinkedListDeque<Item> implements Deque<Item>, Iterable<Item> {
         return N;
     }
 
-    @Override
-    public void pushLeft(Item item) {
-
-    }
-
+    /**
+     * Push to right side
+     * XXX <- Item
+     * @param item
+     */
     @Override
     public void pushRight(Item item) {
-        Node oldFirst = first;
-
-        first = new Node();
-        first.item = item;
+        Node last = new Node(item);
+        last.next = first;
 
         if (N==0) {
-            oldFirst = first;
+            first = last;
+        } else if (N==1) {
+            first.next = last;
+            first.prev = last;
+            last.prev = first;
+        } else {
+            last.prev = first.prev;
+            last.prev.next = last;
+            first.prev = last;
         }
-
-        if (N==1) {
-            oldFirst.next = first;
-        }
-
-        first.next = oldFirst;
-        first.prev = oldFirst.prev;
-
-        oldFirst.prev = first;
 
         N++;
     }
 
+    /**
+     * Push to left side
+     * Item -> XXX
+     * @param item
+     */
     @Override
-    public Item popLeft() {
-        return null;
+    public void pushLeft(Item item) {
+        Node oldfirst = first;
+        first = new Node(item);
+        first.next = oldfirst;
+
+        if (N>1) {
+            first.prev = oldfirst.prev;
+            oldfirst.prev.next = first;
+        }
+        if (N>0) {
+            oldfirst.prev = first;
+            first.next = oldfirst;
+        }
+
+        if (N==1) {
+            first.prev = oldfirst;
+            oldfirst.next = first;
+        }
+
+        N++;
     }
 
+    /**
+     * Pop from left side
+     * Item <- XXX
+     * @return
+     */
+    @Override
+    public Item popLeft() {
+        Item item = first.item;
+
+        if (N>1) {
+            Node oldfirst = first;
+            first = first.next;
+            first.prev = oldfirst.prev;
+            oldfirst.prev.next = first;
+        } else {
+            first.next = null;
+            first.prev = null;
+            first = null;
+        }
+
+        N--;
+
+        return item;
+    }
+
+    /**
+     * Pop from right side
+     * XXX -> Item
+     * @return
+     */
     @Override
     public Item popRight() {
-        return null;
+        Item item;
+
+        if (N>1) {
+            item = first.prev.item;
+            first.prev.prev.next = first;
+            first.prev = first.prev.prev;
+        } else {
+            item = first.item;
+            first.prev = null;
+            first.next = null;
+            first = null;
+        }
+
+        N--;
+
+        return item;
     }
 
     @Override
@@ -70,11 +143,13 @@ public class LinkedListDeque<Item> implements Deque<Item>, Iterable<Item> {
         StringBuilder string = new StringBuilder();
 
         for (Item i : this) {
+            if (string.length() > 0) {
+                string.append(", ");
+            }
             string.append(i);
-            string.append(",");
         }
 
-        return "LinkedListDeque{N=" + N + "}:" + string.toString();
+        return "LinkedListDeque{N=" + N + "}: " + string.toString();
     }
 
     @Override
