@@ -8,7 +8,11 @@ public class BasicUF implements UF {
     public BasicUF(int N) {
         this.N = N;
         data = new int[N];
-        count = 0;
+        count = N;
+
+        for (int i = 0; i < N; i++) {
+            data[i] = i;
+        }
     }
 
 
@@ -17,17 +21,12 @@ public class BasicUF implements UF {
         int groupP = find(p);
         int groupQ = find(q);
 
-        if (groupP == 0 && groupQ == 0) {
-            count++;
-            connect(p, count());
-            connect(q, count());
-        } else if (groupP == 0) {
-            connect(p, groupQ);
-        } else if (groupQ == 0) {
-            connect(q, groupP);
-        } else {
-            merge(groupP, groupQ);
+        if (groupP == groupQ) {
+            return;
         }
+
+        merge(groupP, groupQ);
+        count--;
     }
 
     @Override
@@ -40,7 +39,7 @@ public class BasicUF implements UF {
         int groupP = find(p);
         int groupQ = find(q);
 
-        return groupP != 0 && groupP == groupQ;
+        return  groupP == groupQ;
     }
 
     @Override
