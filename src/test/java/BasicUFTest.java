@@ -1,17 +1,37 @@
+import edu.princeton.cs.introcs.StdIn;
 import org.junit.Assert;
 import org.junit.Test;
 import uf.BasicUF;
 import uf.UF;
 
-public class UFTest {
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+public class BasicUFTest {
     public static void main(String[] args) {
-        int[] a = new int[10];
+        try {
+            if (args.length > 1) {
+                System.setIn(new FileInputStream(args[1]));
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println(e.toString());
+            return;
+        }
 
-        a[3] = 1;
-        a[5] = 1;
+        UF uf = new BasicUF(StdIn.readInt());
 
-        System.out.println(a[9]);
-        System.out.println(a[1]);
+        while(!StdIn.isEmpty()) {
+            int q = StdIn.readInt();
+            int p = StdIn.readInt();
+
+            if (uf.connected(q, p)) {
+                System.out.printf("Skip %d - %d\n", p, q);
+                continue;
+            }
+
+            uf.union(p, q);
+            System.out.printf("Connected %d - %d\n", p, q);
+        }
     }
 
     @Test
