@@ -1,11 +1,11 @@
 package searching.st;
 
 public abstract class ST<Key extends Comparable<Key>, Value> {
-    abstract void put(Key key, Value value);
-    abstract Value get(Key key);
-    abstract int size();
+    public abstract void put(Key key, Value value);
+    public abstract Value get(Key key);
+    public abstract int size();
 
-    int size(Key from, Key to) {
+    public int size(Key from, Key to) {
         if (to.compareTo(from) < 0) {
             return 0;
         }
@@ -19,63 +19,60 @@ public abstract class ST<Key extends Comparable<Key>, Value> {
         return rank;
     }
 
-    abstract Key min();
-    abstract Key max();
+    public abstract Key min();
+    public abstract Key max();
 
     /**
      * Largest key less than or equal to key
      * @param key
      * @return Key
      */
-    abstract Key floor(Key key);
+    public abstract Key floor(Key key);
 
     /**
      * Smallest key greater than or equal to key
      * @param key
      * @return Key
      */
-    abstract Key ceiling(Key key);
+    public abstract Key ceiling(Key key);
 
     /**
      * Number of keys less than key
      * @param key
      * @return
      */
-    abstract int rank(Key key);
+    public abstract int rank(Key key);
 
     /**
      * Key of rank
      * @param k rank
      * @return Key
      */
-    abstract Key select(int k);
+    public abstract Key select(int k);
 
-    void deleteMin() {
+    public void deleteMin() {
         delete(min());
     }
 
-    void deleteMax() {
+    public void deleteMax() {
         delete(max());
     }
 
-    Iterable<Key> keys() {
+    public Iterable<Key> keys() {
         return keys(min(), max());
     }
 
-    abstract Iterable<Key> keys(Key from, Key to);
+    public abstract Iterable<Key> keys(Key from, Key to);
 
-    boolean contains(Key key) {
+    public boolean contains(Key key) {
         return get(key) != null;
     }
 
-    boolean isEmpty() {
+    public boolean isEmpty() {
         return size() != 0;
     }
 
-    void delete(Key key) {
+    public void delete(Key key) {
         put(key, null);
     }
-
-
-
 }
