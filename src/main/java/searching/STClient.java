@@ -3,7 +3,7 @@ package searching;
 import edu.princeton.cs.introcs.StdIn;
 import searching.st.ST;
 
-public abstract class STBaseClient {
+public abstract class STClient {
     protected abstract ST<String, Integer> getST();
 
     public void run() {
