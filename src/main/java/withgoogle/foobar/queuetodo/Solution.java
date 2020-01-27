@@ -1,4 +1,4 @@
-package kata.queuetodo;
+package withgoogle.foobar.queuetodo;
 
 /**
  * Queue To Do

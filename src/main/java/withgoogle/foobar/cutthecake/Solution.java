@@ -1,4 +1,4 @@
-package kata.cutthecake;
+package withgoogle.foobar.cutthecake;
 
 /**
  * The cake is not a lie!

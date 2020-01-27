@@ -1,4 +1,4 @@
-package kata.bunniesescape;
+package withgoogle.foobar.bunniesescape;
 
 import org.junit.Assert;
 import org.junit.Test;

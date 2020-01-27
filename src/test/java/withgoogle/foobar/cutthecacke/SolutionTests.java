@@ -1,6 +1,6 @@
-package kata.cutthecacke;
+package withgoogle.foobar.cutthecacke;
 
-import kata.cutthecake.Solution;
+import withgoogle.foobar.cutthecake.Solution;
 import org.junit.Assert;
 import org.junit.Test;
 

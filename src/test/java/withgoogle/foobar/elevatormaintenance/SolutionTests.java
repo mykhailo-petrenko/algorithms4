@@ -1,4 +1,4 @@
-package kata.elevatormaintenance;
+package withgoogle.foobar.elevatormaintenance;
 
 import org.junit.Assert;
 import org.junit.Test;

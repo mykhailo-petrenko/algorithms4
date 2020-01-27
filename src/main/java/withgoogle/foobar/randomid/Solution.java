@@ -1,4 +1,4 @@
-package kata.randomid;
+package withgoogle.foobar.randomid;
 
 
 import java.util.Arrays;

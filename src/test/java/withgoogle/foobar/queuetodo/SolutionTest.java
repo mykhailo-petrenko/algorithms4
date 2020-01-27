@@ -1,4 +1,4 @@
-package kata.queuetodo;
+package withgoogle.foobar.queuetodo;
 
 import org.junit.Assert;
 import org.junit.Test;

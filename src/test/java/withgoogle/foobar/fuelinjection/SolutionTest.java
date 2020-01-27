@@ -1,4 +1,4 @@
-package kata.fuelinjection;
+package withgoogle.foobar.fuelinjection;
 
 import org.junit.Assert;
 import org.junit.Test;

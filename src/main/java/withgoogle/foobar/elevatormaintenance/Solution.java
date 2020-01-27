@@ -1,4 +1,4 @@
-package kata.elevatormaintenance;
+package withgoogle.foobar.elevatormaintenance;
 
 import java.util.Arrays;
 import java.util.Comparator;

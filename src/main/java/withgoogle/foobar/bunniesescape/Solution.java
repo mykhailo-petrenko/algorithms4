@@ -1,4 +1,4 @@
-package kata.bunniesescape;
+package withgoogle.foobar.bunniesescape;
 
 import java.util.ArrayList;
 import java.util.HashSet;
