@@ -1,5 +1,16 @@
 # https://foobar.withgoogle.com/
 
+## Tasks by Levels
+
+1. The cake in not lie.
+2. 
+   1. Elevator Maintenance.
+   1. Hey, I Already Did That!
+3.
+   1. Queue To Do.
+   1. Fuel Injection Perfection.
+   1. Prepare the Bunnies' Escape.
+
 ## Journal
 
 Success! You've managed to infiltrate Commander Lambda's evil organization, and finally earned yourself an entry-level position as a Minion on her space station. From here, you just might be able to subvert her plans to use the LAMBCHOP doomsday device to destroy Bunny Planet. Problem is, Minions are the lowest of the low in the Lambda hierarchy. Better buck up and get working, or you'll never make it to the top...
