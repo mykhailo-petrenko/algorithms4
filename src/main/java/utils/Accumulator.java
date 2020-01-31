@@ -1,8 +1,8 @@
 package utils;
 
 public class Accumulator {
-    private int N;
-    private double total;
+    protected int N;
+    protected double total;
 
     public void addValue(double value) {
         this.N++;
