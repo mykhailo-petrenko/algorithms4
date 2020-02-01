@@ -10,7 +10,7 @@ public class PQTests {
             1, 3, 5, 7, 8, 4
         };
 
-        PQ<Integer> q = new PriorityQueueMax<>(2);
+        PQ<Integer> q = new PriorityQueueMax<>();
 
         for (int k: list) {
             q.insert(k);
@@ -30,7 +30,7 @@ public class PQTests {
             4050.20
         };
 
-        PQ<Double> q = new PriorityQueueMax<>(20);
+        PQ<Double> q = new PriorityQueueMax<>();
 
         for (double v: in) {
             q.insert(v);

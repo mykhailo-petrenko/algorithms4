@@ -8,16 +8,13 @@ package sorting.priorityqueue;
 public class PriorityQueueMax<T extends Comparable<T>> implements PQ<T> {
     private T[] pt;
     private int N;
-    private int size;
 
     /**
-     * Priority Queue with Max element on the top
-     * @param size maximum of stored elements
+     * Priority Queue without size limit
      */
-    public PriorityQueueMax(int size) {
+    public PriorityQueueMax() {
         N = 0;
-        this.size = size;
-        pt = (T[]) new Comparable[size + 2];
+        resize(2);
     }
 
     private boolean less(int i, int j) {
@@ -36,14 +33,13 @@ public class PriorityQueueMax<T extends Comparable<T>> implements PQ<T> {
      */
     @Override
     public void insert(T key) {
-        int tail = N + 1;
-
-        pt[tail] = key;
-        swim(tail);
-
-        if (tail <= this.size) {
-            N = tail;
+        if (pt.length == (N + 1)) {
+            resize(pt.length * 2);
         }
+
+        N++;
+        pt[N] = key;
+        swim(N);
     }
 
     /**
@@ -64,10 +60,15 @@ public class PriorityQueueMax<T extends Comparable<T>> implements PQ<T> {
         T result = pt[1];
 
         swap(1, N);
+        pt[N] = null;
         N--;
 
         if (N > 1) {
             sink(1);
+
+            if (N > 2 && pt.length == (N * 4)) {
+                resize(N * 2);
+            }
         }
 
         return result;
@@ -123,6 +124,16 @@ public class PriorityQueueMax<T extends Comparable<T>> implements PQ<T> {
             swap(i, child);
             i = child;
         }
+    }
+
+    private void resize(int newSize) {
+        T[] target = (T[]) new Comparable[newSize];
+
+        for (int i = 1; i <= N; i++) {
+            target[i] = pt[i];
+        }
+
+        this.pt = target;
     }
 
 }
