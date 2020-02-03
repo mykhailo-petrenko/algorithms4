@@ -92,6 +92,16 @@ public class PriorityQueueMax<T extends Comparable<T>> implements PQ<T> {
         return N;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder();
+        for (int i = 1; i <= N; i++) {
+            b.append(pt[i].toString());
+            b.append(" ");
+        }
+        return b.toString();
+    }
+
     /**
      * Go upstairs while parent is less then i'th value or until root
      * @param i pointer to node
@@ -123,6 +133,7 @@ public class PriorityQueueMax<T extends Comparable<T>> implements PQ<T> {
 
             swap(i, child);
             i = child;
+            child = child << 1;
         }
     }
 

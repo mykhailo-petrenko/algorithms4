@@ -19,6 +19,8 @@ public class PQTests {
         int actual = q.peek();
 
         Assert.assertEquals(8, actual);
+
+//        System.out.println(q.toString());
     }
 
     @Test
@@ -43,8 +45,10 @@ public class PQTests {
         Assert.assertEquals(16, q.size());
 
         for (double expectedValue : expected) {
+//            System.out.println(q.toString());
             double value = q.pop();
             Assert.assertEquals(expectedValue, value, 0.01);
         }
+
     }
 }
