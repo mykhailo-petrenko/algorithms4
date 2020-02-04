@@ -9,9 +9,9 @@ public class IndexPriorityQueueMin<T extends Comparable<T>> implements IndexPQ<T
 
     public IndexPriorityQueueMin(int capacity) {
         N = 0;
-        keys = (T[]) new Comparable[capacity];
-        indexToKey = new int[capacity];
-        keyToIndex = new int[capacity];
+        keys = (T[]) new Comparable[capacity + 1];
+        indexToKey = new int[capacity + 1];
+        keyToIndex = new int[capacity + 1];
     }
 
     @Override
