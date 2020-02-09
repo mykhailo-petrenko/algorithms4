@@ -1,5 +1,13 @@
 package withgoogle.foobar.running;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Deque;
+import java.util.Set;
+import java.util.TreeSet;
+
 /**
  * Running with Bunnies
  * ====================
@@ -36,17 +44,278 @@ package withgoogle.foobar.running;
  * ==========
  *
  * Input:
- * Solution.solution({{0, 1, 1, 1, 1}, {1, 0, 1, 1, 1}, {1, 1, 0, 1, 1}, {1, 1, 1, 0, 1}, {1, 1, 1, 1, 0}}, 3)
+ * Solution.solution({
+ * {0, 1, 1, 1, 1},
+ * {1, 0, 1, 1, 1},
+ * {1, 1, 0, 1, 1},
+ * {1, 1, 1, 0, 1},
+ * {1, 1, 1, 1, 0}}, 3)
  * Output:
  *     [0, 1]
  *
  * Input:
- * Solution.solution({{0, 2, 2, 2, -1}, {9, 0, 2, 2, -1}, {9, 3, 0, 2, -1}, {9, 3, 2, 0, -1}, {9, 3, 2, 2, 0}}, 1)
+ * Solution.solution({
+ * {0, 2, 2, 2, -1},
+ * {9, 0, 2, 2, -1},
+ * {9, 3, 0, 2, -1},
+ * {9, 3, 2, 0, -1},
+ * {9, 3, 2, 2, 0}}, 1)
  * Output:
  *     [1, 2]
  */
 public class Solution {
+    public static int[][] g1 = new int[][]{{0, 1, 1, 1, 1}, {1, 0, 1, 1, 1}, {1, 1, 0, 1, 1}, {1, 1, 1, 0, 1}, {1, 1, 1, 1, 0}};
+    public static int[][] g2 = new int[][]{{0, 2, 2, 2, -1}, {9, 0, 2, 2, -1}, {9, 3, 0, 2, -1}, {9, 3, 2, 0, -1}, {9, 3, 2, 2, 0}};
+
+    public static class Edge {
+        public int from;
+        public int to;
+        public int weight;
+
+        public Edge(int from, int to, int weight) {
+            this.from = from;
+            this.to = to;
+            this.weight = weight;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("[%d->%d: %d]", from, to, weight);
+        }
+    }
+
+    public static class Digraph {
+        private ArrayList<Edge>[] g;
+        private int V;
+        private int E;
+        private int maxWeight;
+        private int minWeight;
+
+        public Digraph(int times[][]) {
+            E = 0;
+            maxWeight = 0;
+            minWeight = Integer.MAX_VALUE;
+            V = times.length;
+            g = (ArrayList<Edge>[])new ArrayList[times.length];
+
+            for (int v = 0; v < times.length; v++) {
+                g[v] = new ArrayList<Edge>();
+
+                for (int w = 0; w < times[v].length; w++) {
+                    if (v == w) {
+                        continue;
+                    }
+
+                    g[v].add(new Edge(v, w, times[v][w]));
+                    E++;
+
+                    if (maxWeight < times[v][w]) {
+                        maxWeight = times[v][w];
+                    }
+
+                    if (minWeight > times[v][w]) {
+                        minWeight = times[v][w];
+                    }
+                }
+            }
+        }
+
+        public int V() {
+            return V;
+        }
+
+        public int E() {
+            return E;
+        }
+
+        public int getMaxWeight() {
+            return maxWeight;
+        }
+
+        public int getMinWeight() {
+            return minWeight;
+        }
+
+        public Iterable<Edge> adj(int v) {
+            return g[v];
+        }
+    }
+
+    public static class State {
+        int time;
+        int v;
+        Edge from;
+        Set<Integer> bunnies;
+
+        public State(int time, int v, Edge from, Set<Integer> bunnies) {
+            this.time = time;
+            this.v = v;
+            this.from = from;
+            this.bunnies = bunnies;
+        }
+
+        @Override
+        public String toString() {
+            String from = "";
+            if (this.from != null) {
+                from = this.from.toString();
+            }
+
+            return String.format("t: %d, v: %d, from: %s, bunnies: %s", time, v, from, bunniesToString(bunnies));
+        }
+    }
+
+    public static String bunniesToString(Set<Integer> bunnies) {
+        String bs = "[";
+        for (int b: bunnies) {
+            bs += " " + b;
+        }
+        bs += " ]";
+
+        return bs;
+    }
+
+    public static class Task {
+        State state;
+        Edge to;
+
+        public Task(State state, Edge to) {
+            this.state = state;
+            this.to = to;
+        }
+    }
+
+    public static class MyComparator implements Comparator<State> {
+        @Override
+        public int compare(State o1, State o2) {
+
+            Object[] a1 = o1.bunnies.toArray();
+            Object[] a2 = o2.bunnies.toArray();
+
+            for (int i=0; i<a1.length; i++) {
+                int diff = (int)a1[i] - (int)a2[i];
+
+                if (diff == 0) {
+                    continue;
+                }
+
+                return diff;
+            }
+
+            return 0;
+        }
+    }
+
+    public static int maxSize = 0;
+
     public static int[] solution(int[][] times, int times_limit) {
-        return null;
+        Digraph g = new Digraph(times);
+        int V = g.V();
+        int maxBunnies = V - 2;
+        int exitTime = Math.abs(g.getMaxWeight()) + Math.abs(g.getMinWeight());
+
+        Deque<Task> toVisit = new ArrayDeque<>();
+
+        State firstState = new State(-times_limit, 0, null, new TreeSet<>());
+
+        for (Edge edge : g.adj(0)) {
+            toVisit.addLast(new Task(firstState, edge));
+        }
+
+        Task task;
+        State fromState;
+        State state;
+
+        ArrayList<State> potentialResults = new ArrayList<>();
+
+        while (!toVisit.isEmpty()) {
+            task = toVisit.pop();
+
+            fromState = task.state;
+
+            int v = task.to.to;
+            boolean isBunny = (v > 0 && v <= maxBunnies);
+
+            Set<Integer> bunnies = new TreeSet<>(fromState.bunnies);
+
+            if (isBunny) {
+                bunnies.add(v - 1);
+            }
+
+            state = new State(
+                fromState.time + task.to.weight,
+                v,
+                task.to,
+                bunnies
+            );
+
+            // @TODO Save state
+            if (v == (V - 1)) {
+                if (state.time <= 0) {
+//                    System.out.println( bunniesToString(state.bunnies) );
+                    potentialResults.add(state);
+
+                    if (state.bunnies.size() == maxBunnies) {
+                        break;
+                    }
+                }
+            }
+
+            for (Edge edge : g.adj(state.v)) {
+                // @TODO Stop condition
+                if ((state.time + edge.weight) > exitTime) {
+                    continue;
+                }
+                toVisit.addLast(new Task(state, edge));
+            }
+
+        }
+
+        maxSize = 0;
+        for (State result : potentialResults) {
+            if (result.bunnies.size() > maxSize) {
+                maxSize = result.bunnies.size();
+            }
+        }
+
+//        System.out.println(maxSize);
+//        for (State result : potentialResults) {
+//            System.out.println(result);
+//        }
+
+        potentialResults.removeIf(result -> result.bunnies.size() < maxSize);
+
+        Collections.sort(potentialResults, new MyComparator());
+
+//        for (State result : potentialResults) {
+//            System.out.println(result);
+//        }
+
+        if (potentialResults.size() > 0) {
+            int[] result = new int[potentialResults.get(0).bunnies.size()];
+            int i = 0;
+            for (int b: potentialResults.get(0).bunnies) {
+                result[i] = b;
+                i++;
+            }
+
+            return result;
+        }
+
+        return new int[]{};
+    }
+
+
+    public static void main(String[] args) {
+        printResult( solution(g1, 3) );
+        printResult( solution(g2, 1) );
+    }
+
+    public static void printResult(int[] result) {
+        System.out.print("\n[");
+        for (int r: result) {
+            System.out.printf(" %d", r);
+        }
+        System.out.println(" ]");
     }
 }
