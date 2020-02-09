@@ -25,7 +25,7 @@ public class EdgeWeightedDigraph {
      * Number of vertices
      * @return int
      */
-    int V() {
+    public int V() {
         return V;
     }
 
@@ -33,7 +33,7 @@ public class EdgeWeightedDigraph {
      * Number of edges
      * @return int
      */
-    int E() {
+    public int E() {
         return E;
     }
 
