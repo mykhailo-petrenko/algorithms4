@@ -12,13 +12,34 @@ import java.util.TreeSet;
  * Running with Bunnies
  * ====================
  *
- * You and your rescued bunny prisoners need to get out of this collapsing death trap of a space station - and fast! Unfortunately, some of the bunnies have been weakened by their long imprisonment and can't run very fast. Their friends are trying to help them, but this escape would go a lot faster if you also pitched in. The defensive bulkhead doors have begun to close, and if you don't make it through in time, you'll be trapped! You need to grab as many bunnies as you can and get through the bulkheads before they close.
+ * You and your rescued bunny prisoners need to get out of this collapsing death trap of a space station - and fast!
+ * Unfortunately, some of the bunnies have been weakened by their long imprisonment and can't run very fast.
+ * Their friends are trying to help them, but this escape would go a lot faster if you also pitched in.
+ * The defensive bulkhead doors have begun to close, and if you don't make it through in time, you'll be trapped!
+ * You need to grab as many bunnies as you can and get through the bulkheads before they close.
  *
- * The time it takes to move from your starting point to all of the bunnies and to the bulkhead will be given to you in a square matrix of integers. Each row will tell you the time it takes to get to the start, first bunny, second bunny, ..., last bunny, and the bulkhead in that order. The order of the rows follows the same pattern (start, each bunny, bulkhead). The bunnies can jump into your arms, so picking them up is instantaneous, and arriving at the bulkhead at the same time as it seals still allows for a successful, if dramatic, escape. (Don't worry, any bunnies you don't pick up will be able to escape with you since they no longer have to carry the ones you did pick up.) You can revisit different spots if you wish, and moving to the bulkhead doesn't mean you have to immediately leave - you can move to and from the bulkhead to pick up additional bunnies if time permits.
+ * The time it takes to move from your starting point to all of the bunnies and
+ * to the bulkhead will be given to you in a square matrix of integers.
+ * Each row will tell you the time it takes to get to the start, first bunny, second bunny, ..., last bunny, and the bulkhead in that order.
+ * The order of the rows follows the same pattern (start, each bunny, bulkhead).
+ * The bunnies can jump into your arms, so picking them up is instantaneous,
+ * and arriving at the bulkhead at the same time as it seals still allows for a successful, if dramatic, escape.
+ * (Don't worry, any bunnies you don't pick up will be able to escape with you since they no longer have to carry the ones you did pick up.)
+ * You can revisit different spots if you wish, and moving to the bulkhead doesn't mean you have to immediately leave - you can move to
+ * and from the bulkhead to pick up additional bunnies if time permits.
  *
- * In addition to spending time traveling between bunnies, some paths interact with the space station's security checkpoints and add time back to the clock. Adding time to the clock will delay the closing of the bulkhead doors, and if the time goes back up to 0 or a positive number after the doors have already closed, it triggers the bulkhead to reopen. Therefore, it might be possible to walk in a circle and keep gaining time: that is, each time a path is traversed, the same amount of time is used or added.
+ * In addition to spending time traveling between bunnies,
+ * some paths interact with the space station's security checkpoints and add time back to the clock.
+ * Adding time to the clock will delay the closing of the bulkhead doors, and if the time goes back up to 0 or a positive number after the doors have already closed,
+ * it triggers the bulkhead to reopen.
+ * Therefore, it might be possible to walk in a circle and keep gaining time: that is, each time a path is traversed,
+ * the same amount of time is used or added.
  *
- * Write a function of the form solution(times, time_limit) to calculate the most bunnies you can pick up and which bunnies they are, while still escaping through the bulkhead before the doors close for good. If there are multiple sets of bunnies of the same size, return the set of bunnies with the lowest prisoner IDs (as indexes) in sorted order. The bunnies are represented as a sorted list by prisoner ID, with the first bunny being 0. There are at most 5 bunnies, and time_limit is a non-negative integer that is at most 999.
+ * Write a function of the form solution(times, time_limit) to calculate the most bunnies you can pick up and which bunnies they are,
+ * while still escaping through the bulkhead before the doors close for good.
+ * If there are multiple sets of bunnies of the same size, return the set of bunnies with the lowest prisoner IDs (as indexes) in sorted order.
+ * The bunnies are represented as a sorted list by prisoner ID, with the first bunny being 0.
+ * There are at most 5 bunnies, and time_limit is a non-negative integer that is at most 999.
  *
  * For instance, in the case of
  * [
@@ -28,7 +49,8 @@ import java.util.TreeSet;
  *   [9, 3, 2, 0, -1],  # 3 = Bunny 2
  *   [9, 3, 2, 2,  0],  # 4 = Bulkhead
  * ]
- * and a time limit of 1, the five inner array rows designate the starting point, bunny 0, bunny 1, bunny 2, and the bulkhead door exit respectively. You could take the path:
+ * and a time limit of 1, the five inner array rows designate the starting point, bunny 0, bunny 1, bunny 2, and the bulkhead door exit respectively.
+ * You could take the path:
  *
  * Start End Delta Time Status
  *     -   0     -    1 Bulkhead initially open
@@ -88,11 +110,13 @@ public class Solution {
         private ArrayList<Edge>[] g;
         private int V;
         private int E;
+        private ArrayList<Edge> negativeEdges;
         private int maxWeight;
         private int minWeight;
 
         public Digraph(int times[][]) {
             E = 0;
+            negativeEdges = new ArrayList<Edge>();
             maxWeight = 0;
             minWeight = Integer.MAX_VALUE;
             V = times.length;
@@ -102,19 +126,27 @@ public class Solution {
                 g[v] = new ArrayList<Edge>();
 
                 for (int w = 0; w < times[v].length; w++) {
+                    int weight = times[v][w];
+
                     if (v == w) {
                         continue;
                     }
 
-                    g[v].add(new Edge(v, w, times[v][w]));
+                    Edge edge = new Edge(v, w, weight);
+
+                    g[v].add(edge);
                     E++;
 
-                    if (maxWeight < times[v][w]) {
-                        maxWeight = times[v][w];
+                    if (maxWeight < weight) {
+                        maxWeight = weight;
                     }
 
-                    if (minWeight > times[v][w]) {
-                        minWeight = times[v][w];
+                    if (minWeight > weight) {
+                        minWeight = weight;
+                    }
+
+                    if (weight < 0) {
+                        negativeEdges.add(edge);
                     }
                 }
             }
@@ -136,8 +168,62 @@ public class Solution {
             return minWeight;
         }
 
+        public Iterable<Edge> negativeEdges() {
+            return negativeEdges;
+        }
+
         public Iterable<Edge> adj(int v) {
             return g[v];
+        }
+    }
+
+    public static class LoopsDetector {
+        private Digraph g;
+
+        public LoopsDetector(Digraph graph) {
+            g = graph;
+        }
+
+        public boolean hasNegativeLoops() {
+            for (Edge e: g.negativeEdges()) {
+                if (checkEdge(e) == true) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public boolean checkEdge(Edge e) {
+            int s = e.from;
+
+            Deque<Task> toVisit = new ArrayDeque<>();
+
+            State firstState = new State(0, s, null, null);
+
+            toVisit.addLast(new Task(firstState, e));
+
+            while (!toVisit.isEmpty()) {
+                Task task = toVisit.pollFirst();
+                int v = task.to.to;
+                State state = new State(task.state.time + task.to.weight, v, task.to, null);
+
+                for (Edge edge: g.adj(v)) {
+                    int time = edge.weight + state.time;
+
+                    if (time >= 0) {
+                        continue;
+                    }
+
+                    if (v == s) {
+                        return true;
+                    }
+
+                    toVisit.addLast(new Task(state, edge));
+                }
+            }
+
+            return false;
         }
     }
 
@@ -161,7 +247,12 @@ public class Solution {
                 from = this.from.toString();
             }
 
-            return String.format("t: %d, v: %d, from: %s, bunnies: %s", time, v, from, bunniesToString(bunnies));
+            String bunnies = "";
+            if (this.bunnies != null) {
+                bunnies = bunniesToString(this.bunnies);
+            }
+
+            return String.format("t: %d, v: %d, from: %s, bunnies: %s", time, v, from, bunnies);
         }
     }
 
@@ -214,6 +305,18 @@ public class Solution {
         int maxBunnies = V - 2;
         int exitTime = Math.abs(g.getMaxWeight()) + Math.abs(g.getMinWeight());
 
+        LoopsDetector loopsDetector = new LoopsDetector(g);
+
+        if (loopsDetector.hasNegativeLoops()) {
+            int[] allBunnies = new int[maxBunnies];
+
+            for (int i=0; i<maxBunnies; i++) {
+                allBunnies[i] = i;
+            }
+
+            return allBunnies;
+        }
+
         Deque<Task> toVisit = new ArrayDeque<>();
 
         State firstState = new State(-times_limit, 0, null, new TreeSet<>());
@@ -229,7 +332,7 @@ public class Solution {
         ArrayList<State> potentialResults = new ArrayList<>();
 
         while (!toVisit.isEmpty()) {
-            task = toVisit.pop();
+            task = toVisit.pollFirst();
 
             fromState = task.state;
 
@@ -252,7 +355,6 @@ public class Solution {
             // @TODO Save state
             if (v == (V - 1)) {
                 if (state.time <= 0) {
-//                    System.out.println( bunniesToString(state.bunnies) );
                     potentialResults.add(state);
 
                     if (state.bunnies.size() == maxBunnies) {
@@ -278,18 +380,9 @@ public class Solution {
             }
         }
 
-//        System.out.println(maxSize);
-//        for (State result : potentialResults) {
-//            System.out.println(result);
-//        }
-
         potentialResults.removeIf(result -> result.bunnies.size() < maxSize);
 
         Collections.sort(potentialResults, new MyComparator());
-
-//        for (State result : potentialResults) {
-//            System.out.println(result);
-//        }
 
         if (potentialResults.size() > 0) {
             int[] result = new int[potentialResults.get(0).bunnies.size()];
