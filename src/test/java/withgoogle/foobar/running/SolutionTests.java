@@ -99,4 +99,40 @@ public class SolutionTests {
         int[] bunnies = Solution.solution(g4zero, 1);
         Assert.assertArrayEquals(new int[]{0, 1, 2, 3, 4}, bunnies);
     }
+
+    public static final int[][] g5moreMoves = new int[][]{
+    //    S    0    1   2   3   4   5   G
+        {10,  10,   1, 10,  1, 10,  1,  1}, // Start
+        { 1,   0,  10, 10, 10, 10, 10, 10}, // 0
+        {10,   1,   0, 10, 10, 10, 10, 10}, // 1
+        { 1,  10,  10,  0, 10, 10, 10, 10}, // 2
+        {10,  10,  10,  1,  0, 10, 10, 10}, // 3
+        { 1,  10,  10, 10, 10,  0, 10, 10}, // 4
+        {10,  10,  10, 10, 10,  1,  0, 10}, // 5
+        {10,  10,  10, 10, 10, 10, 10,  0}, // Gate
+    };
+
+    @Test
+    public void moreMoves1() {
+        int[] bunnies11 = Solution.solution(g5moreMoves, 3);
+        Assert.assertArrayEquals(new int[]{}, bunnies11);
+
+        int[] bunnies12 = Solution.solution(g5moreMoves, 4);
+        Assert.assertArrayEquals(new int[]{0, 1}, bunnies12);
+    }
+
+    @Test
+    public void moreMoves2() {
+        int[] bunnies21 = Solution.solution(g5moreMoves, 7);
+        Assert.assertArrayEquals(new int[]{0, 1, 2, 3}, bunnies21);
+
+        int[] bunnies22 = Solution.solution(g5moreMoves, 8);
+        Assert.assertArrayEquals(new int[]{0, 1, 2, 3}, bunnies22);
+    }
+
+    @Test
+    public void moreMoves3() {
+        int[] bunnies3 = Solution.solution(g5moreMoves, 10);
+        Assert.assertArrayEquals(new int[]{0, 1, 2, 3, 4, 5}, bunnies3);
+    }
 }

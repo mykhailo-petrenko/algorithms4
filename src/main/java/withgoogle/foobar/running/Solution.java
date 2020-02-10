@@ -303,7 +303,11 @@ public class Solution {
         Digraph g = new Digraph(times);
         int V = g.V();
         int maxBunnies = V - 2;
-        int exitTime = Math.abs(g.getMaxWeight()) + Math.abs(g.getMinWeight());
+        int exitTime = 0;
+
+        if (g.minWeight < 0) {
+            exitTime = (Math.abs(g.getMaxWeight()) - Math.abs(g.getMinWeight())) / 2;
+        }
 
         LoopsDetector loopsDetector = new LoopsDetector(g);
 
