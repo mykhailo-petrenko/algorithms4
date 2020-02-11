@@ -1,11 +1,6 @@
 package withgoogle.foobar.running;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Deque;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Running with Bunnies
@@ -84,7 +79,9 @@ import java.util.TreeSet;
  * Output:
  *     [1, 2]
  */
-public class Solution {
+public class Solution1 {
+    public static int[][] g1 = new int[][]{{0, 1, 1, 1, 1}, {1, 0, 1, 1, 1}, {1, 1, 0, 1, 1}, {1, 1, 1, 0, 1}, {1, 1, 1, 1, 0}};
+    public static int[][] g2 = new int[][]{{0, 2, 2, 2, -1}, {9, 0, 2, 2, -1}, {9, 3, 0, 2, -1}, {9, 3, 2, 0, -1}, {9, 3, 2, 2, 0}};
 
     public static class Edge {
         public int from;
@@ -157,6 +154,14 @@ public class Solution {
             return E;
         }
 
+        public int getMaxWeight() {
+            return maxWeight;
+        }
+
+        public int getMinWeight() {
+            return minWeight;
+        }
+
         public Iterable<Edge> negativeEdges() {
             return negativeEdges;
         }
@@ -183,32 +188,24 @@ public class Solution {
             return false;
         }
 
-        public static class Task {
-            public int time;
-            public Edge to;
-
-            public Task(int time, Edge to) {
-                this.time = time;
-                this.to = to;
-            }
-        }
-
         public boolean checkEdge(Edge e) {
             int s = e.from;
 
             Deque<Task> toVisit = new ArrayDeque<>();
 
-            toVisit.addLast(new Task(0, e));
+            State firstState = new State(0, s, null, null);
+
+            toVisit.addLast(new Task(firstState, e));
 
             while (!toVisit.isEmpty()) {
                 Task task = toVisit.pollFirst();
                 int v = task.to.to;
-                int time = task.time + task.to.weight;
+                State state = new State(task.state.time + task.to.weight, v, task.to, null);
 
                 for (Edge edge: g.adj(v)) {
-                    int nextTime = edge.weight + time;
+                    int time = edge.weight + state.time;
 
-                    if (nextTime >= 0) {
+                    if (time >= 0) {
                         continue;
                     }
 
@@ -216,7 +213,7 @@ public class Solution {
                         return true;
                     }
 
-                    toVisit.addLast(new Task(time, edge));
+                    toVisit.addLast(new Task(state, edge));
                 }
             }
 
@@ -225,24 +222,31 @@ public class Solution {
     }
 
     public static class State {
-        public int time;
-        public int v;
-        public Set<Integer> bunnies;
+        int time;
+        int v;
+        Edge from;
+        Set<Integer> bunnies;
 
-        public State(int time, int v, Set<Integer> bunnies) {
+        public State(int time, int v, Edge from, Set<Integer> bunnies) {
             this.time = time;
             this.v = v;
+            this.from = from;
             this.bunnies = bunnies;
         }
 
         @Override
         public String toString() {
+            String from = "";
+            if (this.from != null) {
+                from = this.from.toString();
+            }
+
             String bunnies = "";
             if (this.bunnies != null) {
                 bunnies = bunniesToString(this.bunnies);
             }
 
-            return String.format("t: %d, v: %d, bunnies: %s", time, v, bunnies);
+            return String.format("t: %d, v: %d, from: %s, bunnies: %s", time, v, from, bunnies);
         }
     }
 
@@ -256,12 +260,22 @@ public class Solution {
         return bs;
     }
 
-    public static class BunniesComparator implements Comparator<Set<Integer>> {
-        @Override
-        public int compare(Set<Integer> o1, Set<Integer> o2) {
+    public static class Task {
+        State state;
+        Edge to;
 
-            Object[] a1 = o1.toArray();
-            Object[] a2 = o2.toArray();
+        public Task(State state, Edge to) {
+            this.state = state;
+            this.to = to;
+        }
+    }
+
+    public static class MyComparator implements Comparator<State> {
+        @Override
+        public int compare(State o1, State o2) {
+
+            Object[] a1 = o1.bunnies.toArray();
+            Object[] a2 = o2.bunnies.toArray();
 
             for (int i=0; i<a1.length; i++) {
                 int diff = (int)a1[i] - (int)a2[i];
@@ -277,103 +291,122 @@ public class Solution {
         }
     }
 
-    public static int[] allBunnies(int maxBunnies) {
-        int[] allBunnies = new int[maxBunnies];
-
-        for (int i = 0; i < maxBunnies; i++) {
-            allBunnies[i] = i;
-        }
-
-        return allBunnies;
-    }
-
-    /**
-     * Floyd–Warshall
-     * @return
-     */
-    public static int[][] allShortestPath(int[][] times) {
-        int V = times.length;
-
-        for (int k = 0; k < V; k++) {
-            for (int i = 0; i < V; i++) {
-                for (int j = 0; j < V; j++) {
-                    int weight = times[i][k] + times[k][j];
-                    if (times[i][j] > weight) {
-                        times[i][j] = weight;
-                    }
-                }
-            }
-        }
-
-        return times;
-    }
+    public static int maxSize = 0;
 
     public static int[] solution(int[][] times, int times_limit) {
-        BunniesComparator bc = new BunniesComparator();
-        int bunniesInResults = 0;
-        Set<Integer> answer = new TreeSet<>();
-        Digraph g = new Digraph(allShortestPath(times));
-        int maxBunnies = g.V() - 2;
-        int gateId = g.V() - 1;
+        Digraph g = new Digraph(times);
+        int V = g.V();
+        int maxBunnies = V - 2;
+        int exitTime = 0;
 
         if (g.minWeight < 0) {
-            if ((new LoopsDetector(g)).hasNegativeLoops()) {
-                return allBunnies(maxBunnies);
-            }
+            exitTime = (Math.abs(g.getMaxWeight()) - Math.abs(g.getMinWeight())) / 2;
         }
 
-        Deque<State> toVisit = new ArrayDeque<>();
-        toVisit.addLast(new State(0, 0, new TreeSet<>()));
+        LoopsDetector loopsDetector = new LoopsDetector(g);
+
+        if (loopsDetector.hasNegativeLoops()) {
+            int[] allBunnies = new int[maxBunnies];
+
+            for (int i=0; i<maxBunnies; i++) {
+                allBunnies[i] = i;
+            }
+
+            return allBunnies;
+        }
+
+        Deque<Task> toVisit = new ArrayDeque<>();
+
+        State firstState = new State(-times_limit, 0, null, new TreeSet<>());
+
+        for (Edge edge : g.adj(0)) {
+            toVisit.addLast(new Task(firstState, edge));
+        }
+
+        Task task;
+        State fromState;
+        State state;
+
+        ArrayList<State> potentialResults = new ArrayList<>();
 
         while (!toVisit.isEmpty()) {
-            State state = toVisit.pollFirst();
+            task = toVisit.pollFirst();
 
-            for (Edge e: g.adj(state.v)) {
-                int time = state.time + e.weight;
-                int v = e.to;
-                Set<Integer> bunnies = state.bunnies;
+            fromState = task.state;
 
-                if (v == 0) {
-                    continue;
-                }
+            int v = task.to.to;
+            boolean isBunny = (v > 0 && v <= maxBunnies);
 
-                if (bunnies.contains(v - 1)) {
-                    continue;
-                }
+            Set<Integer> bunnies = new TreeSet<>(fromState.bunnies);
 
-                if (v == gateId) {
-                    if (time <= times_limit) {
-                        if (bunnies.size() == maxBunnies) {
-                            return allBunnies(maxBunnies);
-                        }
-
-                        if (bunniesInResults < bunnies.size()) {
-                            bunniesInResults = bunnies.size();
-                            answer = bunnies;
-                        } else if (bunniesInResults == bunnies.size() && bc.compare(bunnies, answer) < 0) {
-                            answer = bunnies;
-                        }
-                    }
-
-                    continue;
-                }
-
-                bunnies = new TreeSet<>(state.bunnies);
+            if (isBunny) {
                 bunnies.add(v - 1);
+            }
 
-                State newState = new State(time, v, bunnies);
+            state = new State(
+                fromState.time + task.to.weight,
+                v,
+                task.to,
+                bunnies
+            );
 
-                toVisit.addLast(newState);
+            // @TODO Save state
+            if (v == (V - 1)) {
+                if (state.time <= 0) {
+                    potentialResults.add(state);
+
+                    if (state.bunnies.size() == maxBunnies) {
+                        break;
+                    }
+                }
+            }
+
+            for (Edge edge : g.adj(state.v)) {
+                // @TODO Stop condition
+                if ((state.time + edge.weight) > exitTime) {
+                    continue;
+                }
+                toVisit.addLast(new Task(state, edge));
+            }
+
+        }
+
+        maxSize = 0;
+        for (State result : potentialResults) {
+            if (result.bunnies.size() > maxSize) {
+                maxSize = result.bunnies.size();
             }
         }
 
-        int[] result = new int[answer.size()];
-        int i = 0;
-        for (int b: answer) {
-            result[i] = b;
-            i++;
+        potentialResults.removeIf(result -> result.bunnies.size() < maxSize);
+
+        Collections.sort(potentialResults, new MyComparator());
+
+        if (potentialResults.size() > 0) {
+            int[] result = new int[potentialResults.get(0).bunnies.size()];
+            int i = 0;
+            for (int b: potentialResults.get(0).bunnies) {
+                result[i] = b;
+                i++;
+            }
+
+            return result;
         }
 
-        return result;
+        return new int[]{};
+    }
+
+
+    public static void main(String[] args) {
+        printResult( solution(g1, 3) );
+        printResult( solution(g2, 1) );
+    }
+
+    public static void printResult(int[] result) {
+        System.out.print("\n[");
+        for (int r: result) {
+            System.out.printf(" %d", r);
+        }
+        System.out.println(" ]");
     }
 }
