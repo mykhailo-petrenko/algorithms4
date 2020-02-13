@@ -51,7 +51,7 @@ public class SolutionTests {
     @Test
     public void openTest2() {
         print(g2Negatives);
-        print( Solution.allShortestPath(g2Negatives) );
+//        print( Solution.allShortestPath(g2Negatives) );
 
         int[] bunnies = Solution.solution(g2Negatives, 1);
 
@@ -100,24 +100,37 @@ public class SolutionTests {
         Assert.assertArrayEquals(new int[]{0, 1, 2, 3, 4}, bunnies);
     }
 
+    public static int[][] copy(int[][] source) {
+        int N = source.length;
+        int[][] dest = new int[N][N];
+
+        for (int i = 0; i < N; i++){
+            for (int j = 0; j < N; j++){
+                dest[i][j] = source[i][j];
+            }
+        }
+
+        return dest;
+    }
+
     @Test
     public void loopsDetector() {
-        Solution.Digraph g1 = new Solution.Digraph(g1Easy);
-        Solution.Digraph g2 = new Solution.Digraph(g2Negatives);
-        Solution.Digraph g31 = new Solution.Digraph(g3Loops1);
-        Solution.Digraph g32 = new Solution.Digraph(g3Loops2);
+        int[][] g1 = copy(g1Easy);
+        int[][] g2 = copy(g2Negatives);
+        int[][] g31 = copy(g3Loops1);
+        int[][] g32 = copy(g3Loops2);
 
-        Solution.LoopsDetector finder31 = new Solution.LoopsDetector(g31);
-        Assert.assertTrue(finder31.hasNegativeLoops());
+        Solution.allShortestPath(g1);
+        Assert.assertFalse(Solution.hasCycles(g1));
 
-        Solution.LoopsDetector finder32 = new Solution.LoopsDetector(g32);
-        Assert.assertTrue(finder32.hasNegativeLoops());
+        Solution.allShortestPath(g2);
+        Assert.assertFalse(Solution.hasCycles(g2));
 
-        Solution.LoopsDetector finder1 = new Solution.LoopsDetector(g1);
-        Assert.assertFalse(finder1.hasNegativeLoops());
+        Solution.allShortestPath(g31);
+        Assert.assertTrue(Solution.hasCycles(g31));
 
-        Solution.LoopsDetector finder2 = new Solution.LoopsDetector(g2);
-        Assert.assertFalse(finder2.hasNegativeLoops());
+        Solution.allShortestPath(g32);
+        Assert.assertTrue(Solution.hasCycles(g32));
 
     }
 
@@ -177,5 +190,52 @@ public class SolutionTests {
     public void moreMoves5() {
         int[] bunnies3 = Solution.solution(g5moreMoves, 10);
         Assert.assertArrayEquals(new int[]{0, 1, 2, 3, 4, 5}, bunnies3);
+    }
+
+    public static final int[][] empty = new int [][]{
+        {0, 1},
+        {1, 0}
+    };
+
+    @Test
+    public void emptyTest() {
+        int[] bunnies = Solution.solution(empty, 1);
+        Assert.assertArrayEquals(new int[]{}, bunnies);
+    }
+
+    public static final int[][] empty2 = new int [][]{{}};
+
+    @Test
+    public void emptyTest2() {
+        int[] bunnies = Solution.solution(empty2, 1);
+        Assert.assertArrayEquals(new int[]{}, bunnies);
+    }
+
+    public static final int[][] oneBunny = new int [][]{
+        {1, 1, 1},
+        {1, 1, 1},
+        {1, 1, 1}
+    };
+
+    @Test
+    public void oneBunnyTest() {
+        int[] bunnies = Solution.solution(oneBunny, 2);
+        Assert.assertArrayEquals(new int[]{0}, bunnies);
+    }
+
+    public static final int[][] unos = new int[][]{
+        {0,  1,  1, 1, 1, 1, 1},
+        {1,  1,  1, 1, 1, 1, 1},
+        {1,  1,  1, 1, 1, 1, 1},
+        {1,  1,  1, 1, 1, 1, 1},
+        {1,  1,  1, 1, 1, 1, 1},
+        {1,  1,  1, 1, 1, 1, 1},
+        {1,  1,  1, 1, 1, 1, 1}
+    };
+
+    @Test
+    public void unosUnreachable() {
+        int[] bunnies = Solution.solution(unos, 1);
+        Assert.assertArrayEquals(new int[]{}, bunnies);
     }
 }
