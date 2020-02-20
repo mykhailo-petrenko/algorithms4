@@ -6,8 +6,15 @@ import java.util.*;
 
 public class GunReflectionSandbox {
     public static void main(String[] args) {
-        solution(new int[]{3,2}, new int[]{1,1}, new int[]{2,1}, 4); // -> 7
+//        solution(new int[]{3,2}, new int[]{1,1}, new int[]{2,1}, 4); // -> 7
         // [1, 0], [1, 2], [1, -2], [3, 2], [3, -2], [-3, 2], and [-3, -2].
+
+//        System.out.println(reflections(new int[] {300, 275}, new int[] {150, 150}, new int[] {185, 100}, 500)); // -> 9
+//        System.out.println(reflections(new int[] {300, 275}, new int[] {150, 150}, new int[] {100, 185}, 500)); // -> 9
+
+//        System.out.println(reflections(new int[] {3, 3}, new int[] {1, 1}, new int[] {2, 2}, 5)); // -> 7
+//        System.out.println(reflections(new int[] {4, 4}, new int[] {1, 1}, new int[] {3, 3}, 10)); // -> 13
+        System.out.println(reflections(new int[] {4, 4}, new int[] {1, 1}, new int[] {3, 3}, 20)); // -> 13
     }
 
     public static int solution(int [] dimensions, int[] me, int[] guard, int distance) {
@@ -16,26 +23,45 @@ public class GunReflectionSandbox {
         return 0;
     }
 
+    public static double roundAvoid(double value, int places) {
+        double scale = Math.pow(10, places);
+        return Math.round(value * scale) / scale;
+    }
+
     public static class Direction {
         public double x;
         public double y;
 
         public Direction(double x, double y) {
-            this.x = x;
-            this.y = y;
+            this.x = roundAvoid(x, 14);
+            this.y = roundAvoid(y, 14);
         }
 
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (!(o instanceof Direction)) return false;
+            if (o == null || getClass() != o.getClass()) return false;
+
             Direction direction = (Direction) o;
-            return x == direction.x && y == direction.y;
+
+            if (Double.compare(direction.x, x) != 0) return false;
+            return Double.compare(direction.y, y) == 0;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(x, y);
+            int result;
+            long temp;
+            temp = Double.doubleToLongBits(x);
+            result = (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(y);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("[ %f, %f ]", x, y);
         }
     }
 
@@ -51,12 +77,14 @@ public class GunReflectionSandbox {
         int Ymax = (int)(NYmax * W);
         int Ymin = -Ymax;
 
-        Map<Direction, Double> myReflections = new HashMap<>();
+        HashMap<Direction, Double> myReflections = new HashMap<>();
         Set<Direction> guardReflections = new HashSet<>();
         List<int[]> guardReflectionsRaw = new ArrayList<>();
 
-        StdDraw.setXscale(Xmin, Xmax);
-        StdDraw.setYscale(Ymin, Ymax);
+        int dimension = Math.max(Xmax, Ymax);
+        StdDraw.setCanvasSize(800, 800);
+        StdDraw.setXscale(-dimension, dimension);
+        StdDraw.setYscale(-dimension, dimension);
         StdDraw.setPenRadius(0.001);
         StdDraw.arc(0, 0, R, 0, 360);
 
@@ -117,11 +145,15 @@ public class GunReflectionSandbox {
                     StdDraw.point(xg, yg);
                     guardReflectionsRaw.add(new int[]{xg, yg, guardMagnitude2});
                 }
-
-                System.out.printf("[%d, %d] -> [%d, %d]\n", xm, ym, xg, yg);
             }
         }
 
+        myReflections.forEach((direction, aDouble) -> {
+            System.out.print(direction);
+            System.out.println("\t" + aDouble);
+        });
+
+        System.out.println("Vectors");
         for (int[] guardRaw: guardReflectionsRaw) {
             guardMagnitude = Math.sqrt(guardRaw[2]);
             Direction guardDirection = unitVector(guardRaw[0], guardRaw[1], guardMagnitude);
@@ -132,12 +164,16 @@ public class GunReflectionSandbox {
 
             if (myReflections.containsKey(guardDirection)) {
                 myMagnitude = myReflections.get(guardDirection);
-
+                System.out.printf("%f < %f", myMagnitude, guardMagnitude);
                 if (myMagnitude < guardMagnitude) {
+                    System.out.println("true");
                     continue;
                 }
+                System.out.println("false");
             }
 
+            System.out.print(guardDirection);
+            System.out.println("\t" + guardMagnitude);
             guardReflections.add(guardDirection);
         }
 

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -57,27 +56,40 @@ import java.util.Set;
  *     9
  */
 public class Solution {
+    public static double roundAvoid(double value, int places) {
+        double scale = Math.pow(10, places);
+        return Math.round(value * scale) / scale;
+    }
 
     public static class Direction {
         public double x;
         public double y;
 
         public Direction(double x, double y) {
-            this.x = x;
-            this.y = y;
+            this.x = roundAvoid(x, 14);
+            this.y = roundAvoid(y, 14);
         }
 
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (!(o instanceof Direction)) return false;
+            if (o == null || getClass() != o.getClass()) return false;
+
             Direction direction = (Direction) o;
-            return x == direction.x && y == direction.y;
+
+            if (Double.compare(direction.x, x) != 0) return false;
+            return Double.compare(direction.y, y) == 0;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(x, y);
+            int result;
+            long temp;
+            temp = Double.doubleToLongBits(x);
+            result = (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(y);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            return result;
         }
     }
 
@@ -98,10 +110,6 @@ public class Solution {
         double H = dimensions[1];
         int NXmax = (int)Math.ceil(R / W);
         int NYmax = (int)Math.ceil(R / H);
-        int Xmax = (int)(NXmax * W);
-        int Xmin = -Xmax;
-        int Ymax = (int)(NYmax * W);
-        int Ymin = -Ymax;
 
         Map<Direction, Double> myReflections = new HashMap<>();
         Set<Direction> guardReflections = new HashSet<>();
@@ -138,8 +146,9 @@ public class Solution {
                         myMagnitude = Math.sqrt(myMagnitude2);
                         Direction myDirection = unitVector(xm, ym, myMagnitude);
 
-                        if (myReflections.containsKey(myDirection)) {
-                            if (myReflections.get(myDirection) > myMagnitude) {
+                        double tmp = myReflections.getOrDefault(myDirection, -1.0);
+                        if (tmp != -1.0) {
+                            if (tmp > myMagnitude) {
                                 myReflections.put(myDirection, myMagnitude);
                             }
                         } else {
@@ -163,8 +172,8 @@ public class Solution {
                 continue;
             }
 
-            if (myReflections.containsKey(guardDirection)) {
-                myMagnitude = myReflections.get(guardDirection);
+            myMagnitude = myReflections.getOrDefault(guardDirection, -1.0);
+            if (myMagnitude != -1.0) {
 
                 if (myMagnitude < guardMagnitude) {
                     continue;
