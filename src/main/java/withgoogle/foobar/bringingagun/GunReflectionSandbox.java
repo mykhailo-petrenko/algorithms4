@@ -14,7 +14,7 @@ public class GunReflectionSandbox {
 
 //        System.out.println(reflections(new int[] {3, 3}, new int[] {1, 1}, new int[] {2, 2}, 5)); // -> 7
 //        System.out.println(reflections(new int[] {4, 4}, new int[] {1, 1}, new int[] {3, 3}, 10)); // -> 13
-        System.out.println(reflections(new int[] {4, 4}, new int[] {1, 1}, new int[] {3, 3}, 20)); // -> 13
+        System.out.println(reflections(new int[] {4, 4}, new int[] {1, 1}, new int[] {3, 3}, 10)); // -> 13
     }
 
     public static int solution(int [] dimensions, int[] me, int[] guard, int distance) {
@@ -74,7 +74,7 @@ public class GunReflectionSandbox {
         int NYmax = (int)Math.ceil(R / H);
         int Xmax = (int)(NXmax * W);
         int Xmin = -Xmax;
-        int Ymax = (int)(NYmax * W);
+        int Ymax = (int)(NYmax * H);
         int Ymin = -Ymax;
 
         HashMap<Direction, Double> myReflections = new HashMap<>();
