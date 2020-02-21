@@ -7,17 +7,17 @@ import edu.princeton.cs.introcs.StdOut;
 public abstract class Sorter {
     abstract public void sort(Comparable[] array);
 
-    protected boolean less(Comparable a, Comparable b) {
+    public static boolean less(Comparable a, Comparable b) {
         return (a.compareTo(b) < 0);
     }
 
-    protected void exchange(Comparable[] array, int i, int j) {
+    public static void exchange(Comparable[] array, int i, int j) {
         Comparable buffer = array[i];
         array[i] = array[j];
         array[j] = buffer;
     }
 
-    protected void show(Comparable[] a) {
+    public static void show(Comparable[] a) {
         for (Comparable el : a) {
             StdOut.print(el);
             StdOut.print(" ");
@@ -25,7 +25,7 @@ public abstract class Sorter {
         StdOut.println();
     }
 
-    protected boolean isSorted(Comparable[] array) {
+    public static boolean isSorted(Comparable[] array) {
         for (int i=1; i<array.length; i++) {
             if (less(array[i], array[i-1])) {
                 return false;
@@ -33,6 +33,16 @@ public abstract class Sorter {
         }
 
         return true;
+    }
+
+    public <T extends Comparable<T>> void demo(T[] array) {
+        show(array);
+
+        sort(array);
+
+        assert isSorted(array);
+
+        show(array);
     }
 
     public void demoSorting(String[] args) {
