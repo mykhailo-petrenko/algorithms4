@@ -40,7 +40,9 @@ public abstract class Sorter {
 
         sort(array);
 
-        assert isSorted(array);
+        if (!isSorted(array)) {
+            throw new AssertionError("The array has not been sorted.");
+        }
 
         show(array);
     }
@@ -50,7 +52,10 @@ public abstract class Sorter {
         show(a);
 
         sort(a);
-        assert isSorted(a);
+
+        if (!isSorted(a)) {
+            throw new AssertionError("The array has not been sorted.");
+        }
 
         show(a);
     }
