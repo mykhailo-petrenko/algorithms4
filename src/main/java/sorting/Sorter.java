@@ -59,4 +59,14 @@ public abstract class Sorter {
 
         show(a);
     }
+
+    public static Integer[] generateRandomInts(int n) {
+        Integer[] randomValues = new Integer[n];
+
+        for (int i = 0; i < n; i++) {
+            randomValues[i] = (int)(Math.random() * 100);
+        }
+
+        return randomValues;
+    }
 }

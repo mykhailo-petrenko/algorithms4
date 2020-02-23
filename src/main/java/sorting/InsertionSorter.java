@@ -22,11 +22,7 @@ public class InsertionSorter extends Sorter {
             n = Integer.parseInt(args[0]);
         }
 
-        Integer[] randomValues = new Integer[n];
-
-        for (int i = 0; i < n; i++) {
-            randomValues[i] = (int)(Math.random() * 100);
-        }
+        Integer[] randomValues = generateRandomInts(n);
 
         Sorter selection = new InsertionSorter();
 
