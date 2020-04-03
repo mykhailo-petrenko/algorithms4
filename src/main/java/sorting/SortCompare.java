@@ -1,7 +1,6 @@
 package sorting;
 
 import edu.princeton.cs.introcs.StdDraw;
-import edu.princeton.cs.introcs.StdStats;
 import edu.princeton.cs.introcs.Stopwatch;
 
 import java.awt.*;
@@ -11,30 +10,33 @@ public class SortCompare {
     public enum SORTER {
         SELECTION,
         INSERTION,
-        SHELL
+        SHELL,
+        MERGE_DOWNSTREAM_COPY,
+        MERGE_DOWNSTREAM
     }
 
     public static void main(String[] args) {
         int times = 10;
-        int[] NUMS = new int[]{100, 1000, 3000, 5000, 7000, 10000};
+        int[] NUMS = new int[]{100, 1000, 3000, 5000, 7000, 8000, 10000, 12000, 14000, 20000, 40000, 60000, 80000, 100000};
 
         SORTER[] algorithms = new SORTER[]{
-            SORTER.SELECTION,
-            SORTER.INSERTION,
-            SORTER.SHELL
+//            SORTER.SELECTION,
+//            SORTER.INSERTION,
+            SORTER.SHELL,
+            SORTER.MERGE_DOWNSTREAM_COPY
         };
 
         Color[] colors = new Color[]{
-            Color.BLACK,
-            Color.CYAN,
+//            Color.BLACK,
+//            Color.CYAN,
             Color.GREEN,
             Color.RED,
             Color.ORANGE,
         };
 
         String[] colorsLabels = new String[] {
-            "Black",
-            "Cyan",
+//            "Black",
+//            "Cyan",
             "Green",
             "Red",
             "Orange",
@@ -102,6 +104,8 @@ public class SortCompare {
                 return new InsertionSorter();
             case SHELL:
                 return new ShellSorter();
+            case MERGE_DOWNSTREAM_COPY:
+                return new MergeDownstreamSorter();
             default:
                 throw new Error("Please define sorter.");
         }
