@@ -12,7 +12,7 @@ public class MergeDownstreamSorter extends Sorter {
         merge(array, buffer, 0,array.length - 1);
     }
 
-    public void merge(Comparable[] a, Comparable[] b, int lo, int hi) {
+    public void merge(Comparable[] b, Comparable[] a, int lo, int hi) {
         int mid = ((hi - lo) / 2) + lo;
         if (lo < mid) {
             merge(a, b, lo, mid);
@@ -36,9 +36,9 @@ public class MergeDownstreamSorter extends Sorter {
             }
         }
 
-        for (int k = lo; k <= hi; k++) {
-            a[k] = b[k];
-        }
+//        for (int k = lo; k <= hi; k++) {
+//            a[k] = b[k];
+//        }
     }
 
     public static void main(String[] args) {

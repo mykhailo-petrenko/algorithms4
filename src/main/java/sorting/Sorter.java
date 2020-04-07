@@ -80,11 +80,11 @@ public abstract class Sorter {
 
         sort(array);
 
+        show(array);
+
         if (!isSorted(array)) {
             throw new AssertionError("The array has not been sorted.");
         }
-
-        show(array);
     }
 
     public void demoSorting(String[] args) {

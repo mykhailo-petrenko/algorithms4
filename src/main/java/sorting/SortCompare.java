@@ -11,32 +11,42 @@ public class SortCompare {
         SELECTION,
         INSERTION,
         SHELL,
-        MERGE_DOWNSTREAM_COPY,
-        MERGE_DOWNSTREAM
+        MERGE_DOWNSTREAM,
+        MERGE_WITH_SHELL,
     }
 
     public static void main(String[] args) {
-        int times = 10;
-        int[] NUMS = new int[]{100, 1000, 3000, 5000, 7000, 8000, 10000, 12000, 14000, 20000, 40000, 60000, 80000, 100000};
+        int times = 20;
+
+        int start = 100;
+        int step = 1000;
+        int iterations = 50;
+
+        int[] NUMS = new int[iterations];
+
+        for (int i = 0; i < iterations; i++) {
+            NUMS[i] = start + i * step;
+        }
 
         SORTER[] algorithms = new SORTER[]{
 //            SORTER.SELECTION,
 //            SORTER.INSERTION,
             SORTER.SHELL,
-            SORTER.MERGE_DOWNSTREAM_COPY
+            SORTER.MERGE_DOWNSTREAM,
+            SORTER.MERGE_WITH_SHELL,
         };
 
         Color[] colors = new Color[]{
-//            Color.BLACK,
-//            Color.CYAN,
+            Color.BLACK,
+            Color.CYAN,
             Color.GREEN,
             Color.RED,
             Color.ORANGE,
         };
 
         String[] colorsLabels = new String[] {
-//            "Black",
-//            "Cyan",
+            "Black",
+            "Cyan",
             "Green",
             "Red",
             "Orange",
@@ -60,6 +70,10 @@ public class SortCompare {
                     }
 
                     localMeasurements[t] = stopwatch(algorithm, inputArray);
+
+                    if (!getSorter(algorithm).isSorted(inputArray)) {
+                        throw new RuntimeException("NOT SORTED!");
+                    }
                 }
 
                 double sum = 0.0;
@@ -80,6 +94,14 @@ public class SortCompare {
         StdDraw.setCanvasSize(500, 500);
         StdDraw.setXscale(0, NUMS[NUMS.length - 1]);
         StdDraw.setYscale(0, maxTime);
+
+        System.out.printf("                       \t\t");
+
+        for (int i = 0; i < NUMS.length; i++) {
+            System.out.printf("|\t%d\t", NUMS[i]);
+        }
+
+        System.out.println();
 
         for (int i = 0; i < algorithms.length; i++) {
             System.out.printf("%15s (%7s)\t", algorithms[i], colorsLabels[i]);
@@ -104,8 +126,10 @@ public class SortCompare {
                 return new InsertionSorter();
             case SHELL:
                 return new ShellSorter();
-            case MERGE_DOWNSTREAM_COPY:
+            case MERGE_DOWNSTREAM:
                 return new MergeDownstreamSorter();
+            case MERGE_WITH_SHELL:
+                return new MergeWithShellSorter();
             default:
                 throw new Error("Please define sorter.");
         }
