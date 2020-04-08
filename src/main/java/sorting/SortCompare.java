@@ -12,7 +12,9 @@ public class SortCompare {
         INSERTION,
         SHELL,
         MERGE_DOWNSTREAM,
+        MERGE_DOWNSTREAM_COPY,
         MERGE_WITH_SHELL,
+        MERGE_UP,
     }
 
     public static void main(String[] args) {
@@ -33,7 +35,9 @@ public class SortCompare {
 //            SORTER.INSERTION,
             SORTER.SHELL,
             SORTER.MERGE_DOWNSTREAM,
+            SORTER.MERGE_DOWNSTREAM_COPY,
             SORTER.MERGE_WITH_SHELL,
+            SORTER.MERGE_UP
         };
 
         Color[] colors = new Color[]{
@@ -71,7 +75,9 @@ public class SortCompare {
 
                     localMeasurements[t] = stopwatch(algorithm, inputArray);
 
-                    if (!getSorter(algorithm).isSorted(inputArray)) {
+                    if (!Sorter.isSorted(inputArray)) {
+                        System.out.println(algorithm);
+                        System.out.println(N);
                         throw new RuntimeException("NOT SORTED!");
                     }
                 }
@@ -128,8 +134,12 @@ public class SortCompare {
                 return new ShellSorter();
             case MERGE_DOWNSTREAM:
                 return new MergeDownstreamSorter();
+            case MERGE_DOWNSTREAM_COPY:
+                return new MergeDownstreamCopySorter();
             case MERGE_WITH_SHELL:
                 return new MergeWithShellSorter();
+            case MERGE_UP:
+                return new MergeUpSorter();
             default:
                 throw new Error("Please define sorter.");
         }

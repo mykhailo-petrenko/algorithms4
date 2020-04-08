@@ -109,4 +109,14 @@ public abstract class Sorter {
 
         return randomValues;
     }
+
+    public static Integer[] generateWorstInts(int n) {
+        Integer[] values = new Integer[n];
+
+        for (int i = 0; i < n; i++) {
+            values[i] = n - i;
+        }
+
+        return values;
+    }
 }

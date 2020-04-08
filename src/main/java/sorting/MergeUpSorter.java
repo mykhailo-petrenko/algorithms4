@@ -1,6 +1,9 @@
 package sorting;
 
-public class MergeDownstreamSorter extends Sorter {
+/**
+ *
+ */
+public class MergeUpSorter extends Sorter {
     @Override
     public void sort(Comparable[] array) {
         Comparable[] buffer = new Comparable[array.length];
@@ -9,19 +12,16 @@ public class MergeDownstreamSorter extends Sorter {
             buffer[i] = array[i];
         }
 
-        merge(array, buffer, 0,array.length - 1);
+        for (int chunk = 1; chunk < array.length; chunk *= 2) {
+            for (int lo = 0; lo < array.length - chunk; lo += chunk + chunk) {
+                merge(array, buffer, lo, lo + chunk - 1, Math.min(lo + chunk + chunk - 1, array.length - 1));
+
+            }
+
+        }
     }
 
-    public void merge(Comparable[] b, Comparable[] a, int lo, int hi) {
-        int mid = ((hi - lo) / 2) + lo;
-        if (lo < mid) {
-            merge(a, b, lo, mid);
-        }
-
-        if (mid < hi) {
-            merge(a, b, mid + 1, hi);
-        }
-
+    public void merge(Comparable[] a, Comparable[] b, int lo, int mid, int hi) {
         int i = lo;
         int j = mid + 1;
         for (int k = lo; k <= hi; k++) {
@@ -35,17 +35,21 @@ public class MergeDownstreamSorter extends Sorter {
                 b[k] = a[j++];
             }
         }
+
+        for (int k = lo; k <= hi; k++) {
+            a[k] = b[k];
+        }
     }
 
     public static void main(String[] args) {
-        int n = 10;
+        int n = 7;
         if (args.length > 0) {
             n = Integer.parseInt(args[0]);
         }
 
-        Integer[] randomValues = generateRandomInts(n);
+        Integer[] randomValues = generateWorstInts(n);
 
-        Sorter selection = new MergeDownstreamSorter();
+        Sorter selection = new MergeUpSorter();
 
         selection.demo(randomValues);
     }
