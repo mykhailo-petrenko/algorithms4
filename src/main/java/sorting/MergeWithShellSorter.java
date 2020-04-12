@@ -4,7 +4,9 @@ package sorting;
  * Use ShellSort for small pieces of array
  */
 public class MergeWithShellSorter extends Sorter {
-    private static final int MAX_LENGTH_FOR_SHELLSORT = 100;
+    public static int SWITCH_TO_SHELL_BOUND = 7;
+    public static final ShellSorter shell = new ShellSorter();
+
     @Override
     public void sort(Comparable[] array) {
         Comparable[] buffer = new Comparable[array.length];
@@ -19,8 +21,8 @@ public class MergeWithShellSorter extends Sorter {
     public void merge(Comparable[] a, Comparable[] b, int lo, int hi) {
         int delta = hi - lo;
 
-        if (delta <= MAX_LENGTH_FOR_SHELLSORT) {
-            shellSort(a, lo, hi);
+        if (delta <= SWITCH_TO_SHELL_BOUND) {
+            shell.sort(a, lo, hi);
             return;
         }
 
@@ -49,31 +51,6 @@ public class MergeWithShellSorter extends Sorter {
 
         for (int k = lo; k <= hi; k++) {
             a[k] = b[k];
-        }
-    }
-
-    public void shellSort(Comparable[] array, int start, int end) {
-        int n = end - start;
-
-        int h = 1;
-        int hMax = n / 3;
-
-        while (h < hMax) {
-            h = h * 3 + 1;
-        }
-
-        while (h > 0) {
-            for (int j = h + start; j <= end; j++) {
-                for (int i = j; i >= h + start; i -= h) {
-                    if (less(array[i], array[i-h])) {
-                        exchange(array, i, i-h);
-                    } else {
-                        break;
-                    }
-                }
-            }
-
-            h = h / 3;
         }
     }
 

@@ -31,6 +31,31 @@ public class ShellSorter extends Sorter {
         }
     }
 
+    public void sort(Comparable[] array, int start, int end) {
+        int n = end - start;
+
+        int h = 1;
+        int hMax = n / 3;
+
+        while (h < hMax) {
+            h = h * 3 + 1;
+        }
+
+        while (h > 0) {
+            for (int j = h + start; j <= end; j++) {
+                for (int i = j; i >= h + start; i -= h) {
+                    if (less(array[i], array[i-h])) {
+                        exchange(array, i, i-h);
+                    } else {
+                        break;
+                    }
+                }
+            }
+
+            h = h / 3;
+        }
+    }
+
     public static void main(String args[]) {
         int n = 10;
         if (args.length > 0) {

@@ -4,8 +4,13 @@ import edu.princeton.cs.introcs.StdDraw;
 import edu.princeton.cs.introcs.Stopwatch;
 
 import java.awt.*;
+import java.util.Random;
 
 public class SortCompare {
+    static final Random random;
+    static {
+        random = new Random(System.currentTimeMillis());
+    }
 
     public enum SORTER {
         SELECTION,
@@ -15,12 +20,14 @@ public class SortCompare {
         MERGE_DOWNSTREAM_COPY,
         MERGE_WITH_SHELL,
         MERGE_UP,
+        QUICK_SORT,
+        QUICK_WITH_SHELL,
     }
 
     public static void main(String[] args) {
-        int times = 20;
+        int times = 10;
 
-        int start = 100;
+        int start = 1000;
         int step = 1000;
         int iterations = 50;
 
@@ -33,11 +40,13 @@ public class SortCompare {
         SORTER[] algorithms = new SORTER[]{
 //            SORTER.SELECTION,
 //            SORTER.INSERTION,
-            SORTER.SHELL,
+//            SORTER.SHELL,
+//            SORTER.MERGE_DOWNSTREAM_COPY,
+//            SORTER.MERGE_WITH_SHELL,
             SORTER.MERGE_DOWNSTREAM,
-            SORTER.MERGE_DOWNSTREAM_COPY,
-            SORTER.MERGE_WITH_SHELL,
-            SORTER.MERGE_UP
+            SORTER.MERGE_UP,
+            SORTER.QUICK_SORT,
+            SORTER.QUICK_WITH_SHELL,
         };
 
         Color[] colors = new Color[]{
@@ -46,6 +55,7 @@ public class SortCompare {
             Color.GREEN,
             Color.RED,
             Color.ORANGE,
+            Color.BLUE
         };
 
         String[] colorsLabels = new String[] {
@@ -54,26 +64,35 @@ public class SortCompare {
             "Green",
             "Red",
             "Orange",
+            "Blue"
         };
 
         double[][] measurements = new double[algorithms.length][NUMS.length];
         double maxTime = 0;
-        int a = 0;
 
-        for (SORTER algorithm: algorithms) {
-            for (int iN = 0; iN < NUMS.length; iN++) {
-                int N = NUMS[iN];
+        for (int iN = 0; iN < NUMS.length; iN++) {
+            int N = NUMS[iN];
 
-                double[] localMeasurements = new double[times];
+            double[] localMeasurements = new double[times];
+            Double[] inputArrayPrototype = new Double[N];
+
+            for (int i = 0; i < N; i++) {
+                inputArrayPrototype[i] = random.nextDouble();
+            }
+
+            for (int a = 0; a < algorithms.length; a++) {
+                SORTER algorithm = algorithms[a];
+                Sorter sorter = getSorter(algorithm);
 
                 for (int t = 0; t < times; t++) {
-                    Double[] inputArray = new Double[N];
+                    Double[] inputArray = inputArrayPrototype.clone();
 
-                    for (int i = 0; i < N; i++) {
-                        inputArray[i] = Math.random();
+                    try {
+                        localMeasurements[t] = stopwatch(sorter, inputArray);
+                    } catch (RuntimeException e) {
+                        System.out.printf("Algorithm: %s, Length: %d\n", algorithm, NUMS[iN]);
+                        throw e;
                     }
-
-                    localMeasurements[t] = stopwatch(algorithm, inputArray);
 
                     if (!Sorter.isSorted(inputArray)) {
                         System.out.println(algorithm);
@@ -93,8 +112,6 @@ public class SortCompare {
                     maxTime = measurements[a][iN];
                 }
             }
-
-            a++;
         }
 
         StdDraw.setCanvasSize(500, 500);
@@ -140,15 +157,19 @@ public class SortCompare {
                 return new MergeWithShellSorter();
             case MERGE_UP:
                 return new MergeUpSorter();
+            case QUICK_SORT:
+                return new QuickSort();
+            case QUICK_WITH_SHELL:
+                return new QuickWithShellSort();
             default:
                 throw new Error("Please define sorter.");
         }
     }
 
-    public static double stopwatch(SORTER sorter, Comparable[] array) {
+    public static double stopwatch(Sorter sorter, Comparable[] array) {
         Stopwatch s = new Stopwatch();
 
-        getSorter(sorter).sort(array);
+        sorter.sort(array);
 
         return s.elapsedTime();
     }
