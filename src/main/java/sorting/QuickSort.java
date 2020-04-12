@@ -50,7 +50,7 @@ public class QuickSort extends Sorter {
         return j;
     }
 
-    private static void shuffle(Comparable[] array) {
+    static void shuffle(Comparable[] array) {
         StdRandom.shuffle(array);
     }
 
@@ -60,12 +60,10 @@ public class QuickSort extends Sorter {
             n = Integer.parseInt(args[0]);
         }
 
-//        for (int i = n; i < 300; i++) {
-            Integer[] values = generateWorstInts(n);
+        Integer[] values = generateWorstInts(n);
 
-            Sorter selection = new MergeUpSorter();
+        Sorter selection = new MergeUpSorter();
 
-            selection.demo(values);
-//        }
+        selection.demo(values);
     }
 }

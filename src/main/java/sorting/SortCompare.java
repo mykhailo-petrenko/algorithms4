@@ -28,7 +28,7 @@ public class SortCompare {
         int times = 10;
 
         int start = 1000;
-        int step = 1000;
+        int step = 5000;
         int iterations = 50;
 
         int[] NUMS = new int[iterations];
