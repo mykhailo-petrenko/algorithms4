@@ -1,5 +1,8 @@
 package searching.st;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * BST
  */
@@ -36,14 +39,6 @@ public class STBinarySearchTree<K extends Comparable<K>, V> extends ST<K, V> {
 
         while (true) {
             if (node.key.compareTo(k) < 0) {
-                if (node.left == null) {
-                    node.left = new Node(k, v);
-                    N++;
-                    break;
-                }
-
-                node = node.left;
-            } else if (node.key.compareTo(k) > 0) {
                 if (node.right == null) {
                     node.right = new Node(k, v);
                     N++;
@@ -51,6 +46,14 @@ public class STBinarySearchTree<K extends Comparable<K>, V> extends ST<K, V> {
                 }
 
                 node = node.right;
+            } else if (node.key.compareTo(k) > 0) {
+                if (node.left == null) {
+                    node.left = new Node(k, v);
+                    N++;
+                    break;
+                }
+
+                node = node.left;
             } else {
                 node.value = v;
                 break;
@@ -64,9 +67,9 @@ public class STBinarySearchTree<K extends Comparable<K>, V> extends ST<K, V> {
 
         while (node != null) {
             if (node.key.compareTo(k) < 0) {
-                node = node.left;
-            } else if (node.key.compareTo(k) > 0) {
                 node = node.right;
+            } else if (node.key.compareTo(k) > 0) {
+                node = node.left;
             } else {
                 return node.value;
             }
@@ -82,11 +85,36 @@ public class STBinarySearchTree<K extends Comparable<K>, V> extends ST<K, V> {
 
     @Override
     public Iterable<K> keys() {
-        return null;
+        Queue<K> q = new LinkedList<>();
+        inorder(root, q);
+        return q;
     }
 
     @Override
     public void delete(K k) {
         super.delete(k);
+    }
+
+    /**
+     * Recursively traverse BST in inorger:
+     * - left subtree/child
+     * - current
+     * - right subtree/child
+     * because left subtree smaller than current key,
+     * current node key smaller than right subtree
+     *
+     * @param node
+     * @param q
+     */
+    private void inorder(Node node, Queue<K> q) {
+        if (node == null) {
+            return;
+        }
+
+        inorder(node.left, q);
+
+        q.add(node.key);
+
+        inorder(node.right, q);
     }
 }
