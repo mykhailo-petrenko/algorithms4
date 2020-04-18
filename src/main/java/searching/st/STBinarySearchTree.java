@@ -92,7 +92,74 @@ public class STBinarySearchTree<K extends Comparable<K>, V> extends ST<K, V> {
 
     @Override
     public void delete(K k) {
-        super.delete(k);
+        root = deleteNode(root, k);
+    }
+
+    private Node deleteNode(Node node, K k) {
+        if (node == null) {
+            return null;
+        }
+
+        if (node.key.compareTo(k) < 0) {
+            node.right = deleteNode(node.right, k);
+            return node;
+        }
+
+        if (node.key.compareTo(k) > 0) {
+            node.left = deleteNode(node.left, k);
+            return node;
+        }
+
+        // Has no children - just remove
+        if (node.left == null && node.right == null) {
+            N--;
+            return null;
+        }
+
+        // If has just Right child
+        if (node.left == null) {
+            N--;
+            return node.right;
+        }
+
+        // If has just Left child
+        if (node.right == null) {
+            N--;
+            return node.left;
+        }
+
+        // Has both child
+
+        // Find minimum from right subtree (it is very left node without left child)
+        Node min = detouchRightMinimum(node, k);
+        min.left = node.left;
+        min.right = node.right;
+
+        N--;
+
+        // replace current node by "right minimum"
+        return min;
+    }
+
+    private Node detouchRightMinimum(Node root, K k) {
+        Node node = root.right;
+
+        // If right child already minimum
+        if (node.left == null) {
+            root.right = node.right;
+            return node;
+        }
+
+        // find the very left child
+        while (node.left.left != null) {
+            node = node.left;
+        }
+
+        // Detouch
+        Node min = node.left;
+        node.left = node.left.right;
+
+        return min;
     }
 
     /**
