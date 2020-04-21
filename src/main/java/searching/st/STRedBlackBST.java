@@ -1,5 +1,8 @@
 package searching.st;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * Red Black BST is a way to implement 2-3 ST via BST
  *
@@ -54,6 +57,18 @@ public class STRedBlackBST<K extends Comparable<K>, V> extends ST<K, V> {
 
     @Override
     public V get(K k) {
+        Node node = root;
+
+        while (node != null) {
+            if (node.key.compareTo(k) > 0) {
+                node = node.left;
+            } else if (node.key.compareTo(k) < 0){
+                node = node.right;
+            } else {
+                return node.value;
+            }
+        }
+
         return null;
     }
 
@@ -64,7 +79,11 @@ public class STRedBlackBST<K extends Comparable<K>, V> extends ST<K, V> {
 
     @Override
     public Iterable<K> keys() {
-        return null;
+        Queue<K> iterable = new LinkedList<>();
+
+        inOrderTraverse(root, iterable);
+
+        return iterable;
     }
 
     private boolean isRed(Node node) {
@@ -99,5 +118,15 @@ public class STRedBlackBST<K extends Comparable<K>, V> extends ST<K, V> {
         }
 
         node.setRed();
+    }
+
+    private void inOrderTraverse(Node node, Queue<K> iterable) {
+        if (node == null) {
+            return;
+        }
+
+        inOrderTraverse(node.left, iterable);
+        iterable.add(node.key);
+        inOrderTraverse(node.right, iterable);
     }
 }
