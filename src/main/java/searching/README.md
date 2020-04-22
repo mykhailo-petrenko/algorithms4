@@ -10,3 +10,6 @@
 * get() for non existing key - returns null
 * set(key, null) equals delete(key)
 
+### BST Basic visualization
+See `searching.st.STBinarySearchTree.visualize()`
+![BST](assets/bst-basic-visualization.png)

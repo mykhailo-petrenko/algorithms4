@@ -74,9 +74,9 @@ public class STBinarySearchTreeTest {
      * Generate ST with BST to test deletion
      *            7
      *      2            21
-     *   1     5      15    38
-     *       3   6        36   55
-     *                   37   54
+     *   1     5      15     38
+     *       3   6        36    55
+     *        4            37  54
      *
      * 14 nodes
      *

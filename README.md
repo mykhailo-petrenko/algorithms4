@@ -1,7 +1,10 @@
-#### UF Union Find
+# Algorithms & Data Structure Sandbox
 
-https://algs4.cs.princeton.edu/15uf/
-
+## Union Find
+[Union Find experiments](src/main/java/uf)
 
 ## Sorting
-[Sorting experiments](src/main/java/sorting/)
+[Sorting experiments](src/main/java/sorting)
+
+## Search
+[Search experiments](src/main/java/searching)
