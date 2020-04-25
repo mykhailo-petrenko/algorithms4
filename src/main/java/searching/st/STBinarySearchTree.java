@@ -1,5 +1,7 @@
 package searching.st;
 
+import graphs.visualization.BSTVisualizer;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -7,11 +9,11 @@ import java.util.Queue;
  * BST
  */
 public class STBinarySearchTree<K extends Comparable<K>, V> extends ST<K, V> {
-    private class Node {
+    public static class Node<K, V> {
         private K key;
         private V value;
-        private Node left;
-        private Node right;
+        private Node<K, V> left;
+        private Node<K, V> right;
 
         public Node(K key, V value) {
             this.key = key;
@@ -19,7 +21,7 @@ public class STBinarySearchTree<K extends Comparable<K>, V> extends ST<K, V> {
         }
     }
 
-    private Node root;
+    private Node<K, V> root;
     private int N;
 
     public STBinarySearchTree() {
@@ -43,17 +45,17 @@ public class STBinarySearchTree<K extends Comparable<K>, V> extends ST<K, V> {
     @Override
     public void put(K k, V v) {
         if (root == null) {
-            root = new Node(k, v);
+            root = new Node<>(k, v);
             N++;
             return;
         }
 
-        Node node = root;
+        Node<K, V> node = root;
 
         while (true) {
             if (node.key.compareTo(k) < 0) {
                 if (node.right == null) {
-                    node.right = new Node(k, v);
+                    node.right = new Node<>(k, v);
                     N++;
                     break;
                 }
@@ -61,7 +63,7 @@ public class STBinarySearchTree<K extends Comparable<K>, V> extends ST<K, V> {
                 node = node.right;
             } else if (node.key.compareTo(k) > 0) {
                 if (node.left == null) {
-                    node.left = new Node(k, v);
+                    node.left = new Node<>(k, v);
                     N++;
                     break;
                 }
@@ -76,7 +78,7 @@ public class STBinarySearchTree<K extends Comparable<K>, V> extends ST<K, V> {
 
     @Override
     public V get(K k) {
-        Node node = root;
+        Node<K, V> node = root;
 
         while (node != null) {
             if (node.key.compareTo(k) < 0) {
@@ -108,7 +110,27 @@ public class STBinarySearchTree<K extends Comparable<K>, V> extends ST<K, V> {
         root = deleteNode(root, k);
     }
 
-    private Node deleteNode(Node node, K k) {
+    Node<K, V> getRootNode() {
+        return root;
+    }
+
+    Node<K, V> getNode(K k) {
+        Node<K, V> node = root;
+
+        while (node != null) {
+            if (node.key.compareTo(k) < 0) {
+                node = node.right;
+            } else if (node.key.compareTo(k) > 0) {
+                node = node.left;
+            } else {
+                return node;
+            }
+        }
+
+        return null;
+    }
+
+    private Node<K, V> deleteNode(Node<K, V> node, K k) {
         if (node == null) {
             return null;
         }
@@ -144,7 +166,7 @@ public class STBinarySearchTree<K extends Comparable<K>, V> extends ST<K, V> {
         // Has both child
 
         // Find minimum from right subtree (it is very left node without left child)
-        Node min = detouchRightMinimum(node, k);
+        Node<K, V> min = detouchRightMinimum(node, k);
         min.left = node.left;
         min.right = node.right;
 
@@ -154,8 +176,8 @@ public class STBinarySearchTree<K extends Comparable<K>, V> extends ST<K, V> {
         return min;
     }
 
-    private Node detouchRightMinimum(Node root, K k) {
-        Node node = root.right;
+    private Node<K, V> detouchRightMinimum(Node<K, V> root, K k) {
+        Node<K, V> node = root.right;
 
         // If right child already minimum
         if (node.left == null) {
@@ -169,7 +191,7 @@ public class STBinarySearchTree<K extends Comparable<K>, V> extends ST<K, V> {
         }
 
         // Detouch
-        Node min = node.left;
+        Node<K, V> min = node.left;
         node.left = node.left.right;
 
         return min;
@@ -186,7 +208,7 @@ public class STBinarySearchTree<K extends Comparable<K>, V> extends ST<K, V> {
      * @param node
      * @param q
      */
-    private void inorder(Node node, Queue<K> q) {
+    private void inorder(Node<K, V> node, Queue<K> q) {
         if (node == null) {
             return;
         }
@@ -196,5 +218,16 @@ public class STBinarySearchTree<K extends Comparable<K>, V> extends ST<K, V> {
         q.add(node.key);
 
         inorder(node.right, q);
+    }
+
+    public static void main(String[] args) {
+        Integer[] init = new Integer[] {7, 2, 1, 5, 3, 6, 4, 21, 15, 38, 36, 55, 54, 37};
+        STBinarySearchTree<Integer, Integer> tree = new STBinarySearchTree<>(init, init);
+
+        BSTVisualizer<Node<Integer, Integer>> visualizer = new BSTVisualizer<>(
+            node -> new BSTVisualizer.VNode<>(node.key.toString(), node.left, node.right)
+        );
+
+        visualizer.draw(tree.getRootNode());
     }
 }

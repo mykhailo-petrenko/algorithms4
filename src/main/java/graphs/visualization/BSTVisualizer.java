@@ -1,13 +1,12 @@
 package graphs.visualization;
 
 import edu.princeton.cs.introcs.StdDraw;
-import searching.st.STBinarySearchTree;
 
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class BSTVisualizer {
+public class BSTVisualizer<N> {
     private int WIDTH = 1024;
     private int HEIGHT = 800;
     private int INDENT_VERTICAL = 10;
@@ -15,10 +14,10 @@ public class BSTVisualizer {
     private int LABEL_OFFSET_X = 0;
     private int LABEL_OFFSET_Y = -15;
 
-    private class VNode {
+    public static class VNode<N> {
         String label;
-        VNode left;
-        VNode right;
+        N left;
+        N right;
 
         Color color;
 
@@ -28,7 +27,55 @@ public class BSTVisualizer {
         int parentX;
         int parentY;
 
-        VNode() {
+        public VNode() {
+            setDefaultProperties();
+        }
+
+        public VNode(String label, N left, N right) {
+            setDefaultProperties();
+
+            this.label = label;
+            this.left = left;
+            this.right = right;
+        }
+
+        public VNode(String label, N left, N right, Color color) {
+            setDefaultProperties();
+
+            this.label = label;
+            this.left = left;
+            this.right = right;
+            this.color = color;
+        }
+
+        VNode(String label, N left, N right, int level, int position, int parentX, int parentY) {
+            setDefaultProperties();
+
+            this.label = label;
+            this.left = left;
+            this.right = right;
+            this.level = level;
+            this.position = position;
+            this.parentX = parentX;
+            this.parentY = parentY;
+        }
+
+        VNode<N> setColor(Color color) {
+            this.color = color;
+
+            return this;
+        }
+
+        VNode<N> setPositions(int level, int position, int parentX, int parentY) {
+            this.level = level;
+            this.position = position;
+            this.parentX = parentX;
+            this.parentY = parentY;
+
+            return this;
+        }
+
+        private void setDefaultProperties() {
             this.label = null;
             this.left = null;
             this.right = null;
@@ -39,42 +86,38 @@ public class BSTVisualizer {
 
             this.color = Color.BLACK;
         }
-
-        VNode(String label, VNode left, VNode right, int level, int position, int parentX, int parentY) {
-            this.label = label;
-            this.left = left;
-            this.right = right;
-            this.level = level;
-            this.position = position;
-            this.parentX = parentX;
-            this.parentY = parentY;
-        }
-
-        void setColor(Color color) {
-            this.color = color;
-        }
+    }
+    public interface NodeTransformer<N> {
+        VNode<N> fromDomain(N node);
     }
 
-    public BSTVisualizer() {
+    private NodeTransformer<N> transformer;
+
+    public BSTVisualizer(NodeTransformer<N> transformer) {
+        this.transformer = transformer;
         init();
     }
 
-    public void draw() {
+    public void draw(N node) {
         StdDraw.clear();
 
-        // @TODO: Init VNode
-        VNode root = new VNode();
+        if (node == null) {
+            System.out.println("The node is NULL :o(");
+            return;
+        }
+
+        VNode<N> root = transformer.fromDomain(node);
 
         bfsVisualize(root);
     }
 
-    private void bfsVisualize(VNode root) {
-        Queue<VNode> q = new LinkedList<>();
+    private void bfsVisualize(VNode<N> root) {
+        Queue<VNode<N>> q = new LinkedList<>();
 
         q.add(root);
 
         while (!q.isEmpty()) {
-            VNode point = q.poll();
+            VNode<N> point = q.poll();
 
             int level = point.level;
             int position = point.position;
@@ -83,7 +126,7 @@ public class BSTVisualizer {
             int y = (level * INTERVAL_VERTICAL) + INDENT_VERTICAL;
             int x = (WIDTH / chunks) * (position + 1);
 
-            StdDraw.setPenColor(Color.BLACK);
+            StdDraw.setPenColor(point.color);
             StdDraw.setPenRadius(0.01);
             StdDraw.point(x, y);
 
@@ -92,7 +135,7 @@ public class BSTVisualizer {
             StdDraw.text(x + LABEL_OFFSET_X, y + LABEL_OFFSET_Y, point.label);
 
             if (point.parentX != -1) {
-                StdDraw.setPenColor(Color.GRAY);
+                StdDraw.setPenColor(point.color);
                 StdDraw.setPenRadius(0.001);
                 StdDraw.line(x, y, point.parentX, point.parentY);
             }
@@ -101,13 +144,11 @@ public class BSTVisualizer {
             position *= 2;
 
             if (point.left != null) {
-
-                q.add(new VNode(node.left, level, position, x, y));
-                //
+                q.add(transformer.fromDomain(point.left).setPositions(level, position, x, y));
             }
 
             if (point.right != null) {
-                q.add(new VNode(node.right, level, position + 1, x, y));
+                q.add(transformer.fromDomain(point.right).setPositions(level, position + 1, x, y));
             }
         }
     }
@@ -123,13 +164,5 @@ public class BSTVisualizer {
         StdDraw.setCanvasSize(WIDTH, HEIGHT);
         StdDraw.setXscale(0, WIDTH);
         StdDraw.setYscale(HEIGHT, 0);
-    }
-
-    public static void main(String[] args) {
-        Integer[] init = new Integer[] {7, 2, 1, 5, 3, 6, 4, 21, 15, 38, 36, 55, 54, 37};
-
-        BSTVisualizer visualizer = new BSTVisualizer();
-
-        visualizer.draw();
     }
 }

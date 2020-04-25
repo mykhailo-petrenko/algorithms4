@@ -1,5 +1,8 @@
 package searching.st;
 
+import graphs.visualization.BSTVisualizer;
+
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -12,18 +15,18 @@ import java.util.Queue;
 // @TODO: Implement via Red-Black BST
 // @TODO: Implement Tree visualisation for better debug experience
 public class STRedBlackBST<K extends Comparable<K>, V> extends ST<K, V> {
-    private Node root = null;
+    private Node<K, V> root = null;
     private int N = 0;
 
     static boolean RED = true;
     static boolean BLACK = false;
 
-    class Node {
+    public static class Node<K, V> {
         K key;
         V value;
         boolean color;
-        Node left;
-        Node right;
+        Node<K, V> left;
+        Node<K, V> right;
 
         public Node(K key, V value) {
             this.key = key;
@@ -57,7 +60,7 @@ public class STRedBlackBST<K extends Comparable<K>, V> extends ST<K, V> {
 
     @Override
     public V get(K k) {
-        Node node = root;
+        Node<K, V> node = root;
 
         while (node != null) {
             if (node.key.compareTo(k) > 0) {
@@ -86,12 +89,12 @@ public class STRedBlackBST<K extends Comparable<K>, V> extends ST<K, V> {
         return iterable;
     }
 
-    private boolean isRed(Node node) {
+    private boolean isRed(Node<K, V> node) {
         return node.color == RED;
     }
 
-    private Node rotateLeft(Node node) {
-        Node newSubtreeRoot = node.right;
+    private Node<K, V> rotateLeft(Node<K, V> node) {
+        Node<K, V> newSubtreeRoot = node.right;
 
         node.right = newSubtreeRoot.left;
         newSubtreeRoot.left = node;
@@ -99,8 +102,8 @@ public class STRedBlackBST<K extends Comparable<K>, V> extends ST<K, V> {
         return newSubtreeRoot;
     }
 
-    private Node rotateRight(Node node) {
-        Node newSubtreeRoot = node.left;
+    private Node<K, V> rotateRight(Node<K, V> node) {
+        Node<K, V> newSubtreeRoot = node.left;
 
         node.left = newSubtreeRoot.right;
         newSubtreeRoot.right = node;
@@ -108,7 +111,7 @@ public class STRedBlackBST<K extends Comparable<K>, V> extends ST<K, V> {
         return newSubtreeRoot;
     }
 
-    private void flipColor(Node node) {
+    private void flipColor(Node<K, V> node) {
         if (node.left != null) {
             node.left.setRed();
         }
@@ -120,7 +123,7 @@ public class STRedBlackBST<K extends Comparable<K>, V> extends ST<K, V> {
         node.setRed();
     }
 
-    private void inOrderTraverse(Node node, Queue<K> iterable) {
+    private void inOrderTraverse(Node<K, V> node, Queue<K> iterable) {
         if (node == null) {
             return;
         }
@@ -128,5 +131,25 @@ public class STRedBlackBST<K extends Comparable<K>, V> extends ST<K, V> {
         inOrderTraverse(node.left, iterable);
         iterable.add(node.key);
         inOrderTraverse(node.right, iterable);
+    }
+
+    public static void main(String[] args) {
+        int[] init = new int[] {1, 2, 3, 4, 5, 6, 7, 8};
+
+        STRedBlackBST<Integer, Integer> tree = new STRedBlackBST<>();
+
+        for (int k : init) {
+            tree.put(k, k);
+        }
+
+        BSTVisualizer<Node<Integer, Integer>> visualizer = new BSTVisualizer<>(
+            node -> new BSTVisualizer.VNode<Node<Integer, Integer>>(
+                node.key.toString(),
+                node.left,
+                node.right,
+                (node.color) ? Color.RED : Color.BLACK
+            )
+        );
+        visualizer.draw(tree.root);
     }
 }
