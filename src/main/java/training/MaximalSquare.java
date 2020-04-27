@@ -18,10 +18,6 @@ package training;
  * Output: 4
  */
 public class MaximalSquare {
-    public static final int W = 0;
-    public static final int H = 1;
-    public static final int S = 2;
-
     public int maximalSquare(char[][] matrix) {
         int M = matrix.length;
         if (M == 0) {
@@ -33,28 +29,24 @@ public class MaximalSquare {
         }
 
         int max = 0;
-        int[][][]s = new int[M][N][3];
+        int[][]s = new int[M][N];
 
         for (int i = 0; i < M; i++) {
             for (int j = 0; j < N; j++) {
                 if (i == 0 || j == 0 || matrix[i][j] == '0') {
-                    int v = (matrix[i][j] == '0') ? 0 : 1;
-                    s[i][j] = new int[]{v, v, v};
-                    max = Math.max(max, s[i][j][S]);
+                    int v = (matrix[i][j] == '1') ? 1 : 0;
+                    s[i][j] = v;
+                    max = Math.max(max, s[i][j]);
                     continue;
                 }
 
-                s[i][j] = new int[]{
-                    s[i - 1][j][W] + 1,
-                    s[i][j - 1][H] + 1,
-                    1
-                };
+                s[i][j] = 1;
 
-                int maxDimension = 1 + s[i - 1][j - 1][S];
-                int dimension = Math.min(s[i][j][W], s[i][j][H]);
-                s[i][j][S] = Math.min(dimension, maxDimension);
+                int maxDimension = s[i - 1][j - 1];
+                int dimension = Math.min(s[i - 1][j], s[i][j - 1]);
+                s[i][j] = 1 + Math.min(dimension, maxDimension);
 
-                max = Math.max(max, s[i][j][S]);
+                max = Math.max(max, s[i][j]);
             }
         }
         return max * max;

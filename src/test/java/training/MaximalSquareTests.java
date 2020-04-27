@@ -33,4 +33,38 @@ public class MaximalSquareTests {
             new MaximalSquare().maximalSquare(matrix)
         );
     }
+
+    @Test
+    public void min() {
+        char[][] matrix = new char[][]{{}};
+        Assert.assertEquals(
+            0,
+            new MaximalSquare().maximalSquare(matrix)
+        );
+
+        matrix = new char[][]{{'0'}};
+        Assert.assertEquals(
+            0,
+            new MaximalSquare().maximalSquare(matrix)
+        );
+
+        matrix = new char[][]{{'1'}};
+        Assert.assertEquals(
+            1,
+            new MaximalSquare().maximalSquare(matrix)
+        );
+    }
+
+    @Test
+    public void zeros() {
+        char[][] matrix = new char[][]{
+            {'0','0','0','0','0'},
+            {'0','0','0','0','0'},
+            {'0','0','0','0','0'}
+        };
+        Assert.assertEquals(
+            0,
+            new MaximalSquare().maximalSquare(matrix)
+        );
+    }
 }
