@@ -35,6 +35,20 @@ public class MaximalSquareTests {
     }
 
     @Test
+    public void smock3() {
+        char[][] matrix = new char[][]{
+            {'1','0','1','1','0'},
+            {'1','1','1','1','1'},
+            {'1','1','1','1','1'},
+            {'0','1','1','0','0'}
+        };
+        Assert.assertEquals(
+            4,
+            new MaximalSquare().maximalSquare(matrix)
+        );
+    }
+
+    @Test
     public void min() {
         char[][] matrix = new char[][]{{}};
         Assert.assertEquals(

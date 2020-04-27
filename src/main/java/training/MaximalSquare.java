@@ -40,8 +40,6 @@ public class MaximalSquare {
                     continue;
                 }
 
-                s[i][j] = 1;
-
                 int maxDimension = s[i - 1][j - 1];
                 int dimension = Math.min(s[i - 1][j], s[i][j - 1]);
                 s[i][j] = 1 + Math.min(dimension, maxDimension);
