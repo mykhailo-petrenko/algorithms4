@@ -7,8 +7,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class BSTVisualizer<N> {
-    private int WIDTH = 1024;
-    private int HEIGHT = 800;
+    private int WIDTH = 1280;
+    private int HEIGHT = 960;
     private int INDENT_VERTICAL = 10;
     private int INTERVAL_VERTICAL = 60;
     private int LABEL_OFFSET_X = 0;
@@ -122,9 +122,10 @@ public class BSTVisualizer<N> {
             int level = point.level;
             int position = point.position;
 
-            int chunks = (int) Math.pow(2, level) + 1;
+            int width = WIDTH / (int) Math.pow(2, level);
+            int shift = - (width / 2);
             int y = (level * INTERVAL_VERTICAL) + INDENT_VERTICAL;
-            int x = (WIDTH / chunks) * (position + 1);
+            int x = width * (position) - shift;
 
             StdDraw.setPenColor(point.color);
             StdDraw.setPenRadius(0.01);
