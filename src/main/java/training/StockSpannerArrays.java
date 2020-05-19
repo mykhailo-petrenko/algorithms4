@@ -1,8 +1,5 @@
 package training;
 
-import java.util.LinkedList;
-import java.util.Stack;
-
 /**
  * Online Stock Span
  * ===========================
@@ -16,31 +13,48 @@ import java.util.Stack;
  * For example, if the price of a stock over the next 7 days were `[100, 80, 60, 70, 60, 75, 85]`,
  * then the stock spans would be `[1, 1, 1, 2, 1, 4, 6]`.
  */
-class StockSpanner {
-    private Stack<Integer> counts;
-    private Stack<Integer> prices;
+class StockSpannerArrays {
+    private int[] pt;
+    private int[] prices;
+    private int N = 0;
 
-    public StockSpanner() {
-        counts = new Stack<>();
-        prices = new Stack<>();
+    public StockSpannerArrays() {
+        resize(128);
     }
 
     public int next(int price) {
         int count = 1;
-
-        while (!prices.empty() && prices.peek() <= price) {
-            count += counts.pop();
-            prices.pop();
+        if (pt.length == (N + 1)) {
+            resize(pt.length * 2);
         }
 
-        counts.add(count);
-        prices.add(price);
+        prices[N] = price;
 
+        while ((N - count >= 0) && (prices[N] >= prices[N - count])) {
+            count += pt[N - count];
+        }
+
+        pt[N] = count;
+
+        N++;
         return count;
     }
 
+    private void resize(int newSize) {
+        int[] pt = new int[newSize];
+        int[] prices = new int[newSize];
+
+        for (int i = 0; i < N; i++) {
+            pt[i] = this.pt[i];
+            prices[i] = this.prices[i];
+        }
+
+        this.pt = pt;
+        this.prices = prices;
+    }
+
     public static void main(String[] args) {
-        StockSpanner spanner = new StockSpanner();
+        StockSpannerArrays spanner = new StockSpannerArrays();
 
         int[] values = new int[] {100, 80, 60, 70, 60, 75, 85};
 
