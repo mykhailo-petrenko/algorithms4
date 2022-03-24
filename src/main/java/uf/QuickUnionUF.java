@@ -1,13 +1,11 @@
 package uf;
 
 public class QuickUnionUF implements UF {
-    private int N;
     private int count;
     private int[] data;
 
 
     public QuickUnionUF(int N) {
-        this.N = N;
         this.count = N;
         this.data = new int[N];
 

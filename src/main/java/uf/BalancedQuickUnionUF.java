@@ -1,13 +1,11 @@
 package uf;
 
 public class BalancedQuickUnionUF implements UF {
-    private int N;
     private int count;
     private int[] data;
     private int[] size;
 
     public BalancedQuickUnionUF(int N) {
-        this.N = N;
         this.count = N;
         this.data = new int[N];
         this.size = new int[N];
