@@ -44,7 +44,7 @@ set(EXE hellocpp)
 
 add_executable(${EXE}
         hellocpp.cpp
-    )
+        trees/kd/kd_tree.cpp trees/kd/kd_tree.h)
 
 #target_link_libraries(${EXE} glm::glm spdlog::spdlog)
 
