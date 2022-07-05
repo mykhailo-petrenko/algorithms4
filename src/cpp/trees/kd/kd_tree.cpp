@@ -4,8 +4,8 @@
 
 #include "kd_tree.h"
 
-namespace kd
+namespace kd {
 
 
 
-
+}
