@@ -41,7 +41,6 @@ void do_test(int *nums, int from, int to, int search, int expected) {
 int main() {
     int nums[] = {1,3,5,6,8,9,10,11,13,14,15,18,23,28,50,68,101,505};
     int N = 18;
-    int out;
 
     do_test(&nums[0], 0, N, 1, 0);
     do_test(&nums[0], 0, N, 3, 1);
