@@ -70,13 +70,14 @@ int minimumRecolors(char * blocks, int k){
 
 int minimumRecolorsPointers(char * blocks, int k) {
     int currentRepaints = 0;
-    int minRepaints = k;
+    int minRepaints;
     char * tail = blocks;
 
-    for (int i = k; i > 0; i--, blocks++) {
+    while (k-- > 0) {
         if (*blocks == 'W') {
             currentRepaints++;
         }
+        blocks++;
     }
 
     minRepaints = currentRepaints;
