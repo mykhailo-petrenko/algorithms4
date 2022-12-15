@@ -68,8 +68,41 @@ int minimumRecolors(char * blocks, int k){
     return minRepaints;
 }
 
+int minimumRecolorsPointers(char * blocks, int k) {
+    int currentRepaints = 0;
+    int minRepaints = k;
+    char * tail = blocks;
+
+    for (int i = k; i > 0; i--, blocks++) {
+        if (*blocks == 'W') {
+            currentRepaints++;
+        }
+    }
+
+    minRepaints = currentRepaints;
+
+    while(*blocks != '\0') {
+        if (*tail == 'W') {
+            currentRepaints--;
+        }
+        if (*blocks == 'W') {
+            currentRepaints++;
+        }
+
+        if (minRepaints > currentRepaints) {
+            minRepaints = currentRepaints;
+        }
+
+        tail++;
+        blocks++;
+    }
+
+
+    return minRepaints;
+}
+
 void do_test(char * blocks, int k, int expected) {
-    int out = minimumRecolors(blocks, k);
+    int out = minimumRecolorsPointers(blocks, k);
     assert_equals_int("mock", &expected, &out);
 }
 
