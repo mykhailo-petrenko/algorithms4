@@ -5,7 +5,7 @@ set(CMAKE_C_STANDARD 11)
 
 include_directories(lib)
 
-add_executable(c
+add_executable(count_of_smaller_numbers_after_self
         sorting/315_count_of_smaller_numbers_after_self.c lib/utest.c lib/utest.h)
 
 add_executable(bsearch

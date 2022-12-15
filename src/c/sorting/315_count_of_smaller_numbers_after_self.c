@@ -43,7 +43,7 @@ int main() {
 
     int* out = countSmaller(in, 4, returnSize);
 
-    assert_equals("Basic test", expected, out, *returnSize);
+    assert_equals_array("Basic test", expected, out, *returnSize);
 
     printf("SUCCESS\n");
 

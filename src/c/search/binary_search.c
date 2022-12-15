@@ -2,8 +2,9 @@
 // Created by Mykhailo Petrenko on 05/07/2022.
 //
 
-#include <stdlib.h>
 #include <stdio.h>
+
+#include "../lib/utest.h"
 
 int binary_search(int needle, int* nums, int from, int to) {
     int lo = from;
@@ -32,34 +33,28 @@ int binary_search(int needle, int* nums, int from, int to) {
 }
 
 
+void do_test(int *nums, int from, int to, int search, int expected) {
+    int out = binary_search(search, nums, from, to);
+    assert_equals_int("mock", &expected, &out);
+}
+
 int main() {
     int nums[] = {1,3,5,6,8,9,10,11,13,14,15,18,23,28,50,68,101,505};
     int N = 18;
     int out;
 
-    out = binary_search(1, &nums[0], 0, N);
-    printf("nums[%d] = %d\n", out, 1);
+    do_test(&nums[0], 0, N, 1, 0);
+    do_test(&nums[0], 0, N, 3, 1);
+    do_test(&nums[0], 0, N, 68, 15);
+    do_test(&nums[0], 0, N, 101,  16);
+    do_test(&nums[0], 0, N, 505, 17);
 
-    out = binary_search(3, &nums[0], 0, N);
-    printf("nums[%d] = %d\n", out, 3);
 
-    out = binary_search(68, &nums[0], 0, N);
-    printf("nums[%d] = %d\n", out, 68);
-
-    out = binary_search(101, &nums[0], 0, N);
-    printf("nums[%d] = %d\n", out, 101);
-
-    out = binary_search(505, &nums[0], 0, N);
-    printf("nums[%d] = %d\n", out, 505);
-
-    out = binary_search(-1, &nums[0], 0, N);
-    printf("nums[%d] = %d\n", out, -1);
-
-    out = binary_search(100, &nums[0], 0, N);
-    printf("nums[%d] = %d\n", out, 100);
-
-    out = binary_search(700, &nums[0], 0, N);
-    printf("nums[%d] = %d\n", out, 700);
+    do_test(&nums[0], 0, N, -1, -1);
+    do_test(&nums[0], 0, N, 0, -1);
+    do_test(&nums[0], 0, N, 100, -1);
+    do_test(&nums[0], 0, N, 700, -1);
+    do_test(&nums[0], 0, N, 506, -1);
 
     return 0;
 }

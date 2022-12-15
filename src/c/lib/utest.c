@@ -8,7 +8,19 @@
 #define ANSI_COLOR_RED          "\x1b[31m"
 #define ANSI_COLOR_GREEN        "\x1b[32m"
 
-void assert_equals(char* name, int* expect, int* real, int size) {
+void assert_equals_int(char* name, int* expect, int* real) {
+    printf(">> %s: ", name);
+
+    if (*expect != *real) {
+        printf(ANSI_COLOR_RED "Error: Expected '%d' but got the '%d' \n" ANSI_RESET_ALL, *expect, *real);
+        printf(ANSI_RESET_ALL "\n");
+        exit(1);
+    }
+
+    printf(ANSI_COLOR_GREEN "+ PASSED! '%d' != '%d'\n" ANSI_RESET_ALL, *expect, *real);
+}
+
+void assert_equals_array(char* name, int* expect, int* real, int size) {
     printf(">> %s: ", name);
 
     int n = size;
