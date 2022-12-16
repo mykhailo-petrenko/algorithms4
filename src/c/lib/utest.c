@@ -8,7 +8,7 @@
 #define ANSI_COLOR_RED          "\x1b[31m"
 #define ANSI_COLOR_GREEN        "\x1b[32m"
 
-void assert_equals_int(char* name, int* expect, int* real) {
+void assert_equals_int(const char* name, const int* expect, const int* real) {
     printf(">> %s: ", name);
 
     if (*expect != *real) {
@@ -20,12 +20,12 @@ void assert_equals_int(char* name, int* expect, int* real) {
     printf(ANSI_COLOR_GREEN "+ PASSED! '%d' != '%d'\n" ANSI_RESET_ALL, *expect, *real);
 }
 
-void assert_equals_array(char* name, int* expect, int* real, int size) {
+void assert_equals_array(const char* name, const int* expect, const int* real, int size) {
     printf(">> %s: ", name);
 
     int n = size;
-    int* expectedCursor = expect;
-    int* realCursor = real;
+    const int* expectedCursor = expect;
+    const int* realCursor = real;
 
     while(n-- > 0) {
         if (*expectedCursor != *realCursor) {
@@ -44,7 +44,7 @@ void assert_equals_array(char* name, int* expect, int* real, int size) {
     printf(ANSI_COLOR_GREEN "+ PASSED!\n" ANSI_RESET_ALL);
 }
 
-void print_array(int* nums, int N) {
+void print_array(const int* nums, int N) {
     printf("[");
 
     while(N-- > 0) {

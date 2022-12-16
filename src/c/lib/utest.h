@@ -8,10 +8,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void assert_equals_int(char* name, int* expect, int* real);
+void assert_equals_int(const char* name, const int* expect, const int* real);
 
-void assert_equals_array(char* name, int* expect, int* real, int size);
+void assert_equals_array(const char* name, const int* expect, const int* real, int size);
 
-void print_array(int* nums, int N);
+void print_array(const int* nums, int N);
 
 #endif //C_UTEST_H

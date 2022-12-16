@@ -11,3 +11,5 @@ add_executable(bsearch lib/utest.c lib/utest.h search/binary_search.c)
 
 add_executable(2379_minimum_recolors_wb lib/utest.c lib/utest.h sliding/2379_minimum_recolors_wb.c)
 add_executable(2269_k_beauty_of_a_number lib/utest.c lib/utest.h sliding/2269_k_beauty_of_a_number.c)
+
+add_executable(1695_Maximum_Erasure_Value lib/utest.c lib/utest.h sliding/1695_Maximum_Erasure_Value.c)
