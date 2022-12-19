@@ -65,12 +65,12 @@ int main() {
     int in2[] = {-1, -1};
     int expected2[] = {0, 0};
     out = countSmaller(in2, 2, returnSize);
-    assert_equals("[-1, -1] -> [0, 0]", expected2, out, *returnSize);
+    assert_equals_array("[-1, -1] -> [0, 0]", expected2, out, *returnSize);
 
     int in3[] = {1};
     int expected3[] = {0};
     out = countSmaller(in3, 1, returnSize);
-    assert_equals("[1] -> [0]", expected3, out, *returnSize);
+    assert_equals_array("[1] -> [0]", expected3, out, *returnSize);
 
     printf("SUCCESS\n");
 

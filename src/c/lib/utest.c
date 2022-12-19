@@ -17,7 +17,7 @@ void assert_equals_int(const char* name, const int* expect, const int* real) {
         exit(1);
     }
 
-    printf(ANSI_COLOR_GREEN "+ PASSED! '%d' != '%d'\n" ANSI_RESET_ALL, *expect, *real);
+    printf(ANSI_COLOR_GREEN "+ PASSED! '%d' == '%d'\n" ANSI_RESET_ALL, *expect, *real);
 }
 
 void assert_equals_array(const char* name, const int* expect, const int* real, int size) {
