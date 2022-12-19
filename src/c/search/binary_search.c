@@ -6,19 +6,21 @@
 
 #include "../lib/utest.h"
 
-int binary_search(int needle, int* nums, int from, int to) {
+int binary_search(int needle, const int* nums, int from, int to) {
     int lo = from;
     int hi = to;
     int mid;
+    int v;
 
     while (lo < hi) {
         mid = lo + (hi - lo) / 2;
+        v = nums[mid];
 
-        if (needle == nums[mid]) {
+        if (needle == v) {
             return mid;
         }
 
-        if (needle > nums[mid]) {
+        if (v < needle) {
             lo = mid + 1;
         } else {
             hi = mid;
@@ -39,7 +41,7 @@ void do_test(int *nums, int from, int to, int search, int expected) {
 }
 
 int main() {
-    int nums[] = {1,3,5,6,8,9,10,11,13,14,15,18,23,28,50,68,101,505};
+    int nums[] = {2,3,5,6,8,9,10,11,13,14,15,18,23,28,50,68,101,505};
     int N = 18;
 
     do_test(&nums[0], 0, N, 1, 0);
