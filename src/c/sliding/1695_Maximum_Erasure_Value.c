@@ -20,17 +20,48 @@ An array b is called to be a subarray of a if it forms a contiguous subsequence 
     Explanation: The optimal subarray here is [5,2,1] or [1,2,5].
 
 ## Constraints:
-    1 <= nums.length <= 105
-    1 <= nums[i] <= 104
+    1 <= nums.length <= 10^5
+    1 <= nums[i] <= 10^4
 
 */
 
 #include "../lib/utest.h"
 
-int maximumUniqueSubarray(int* nums, int numsSize){
-    // @TODO: Solve problem =)
+int maximumUniqueSubarray(const int* nums, int numsSize) {
+    const int MAX_NUMS = 10000 + 1;
+    int hash[MAX_NUMS];
 
-    return 0;
+    for (int i = 0; i < MAX_NUMS; i++) {
+        hash[i] = 0;
+    }
+
+    int tail = 0;
+    int head = 0;
+    int maxSum = 0;
+    int sum = 0;
+
+    while (head < numsSize) {
+        hash[nums[head]]++;
+        sum += nums[head];
+
+        if (hash[nums[head]] == 1) {
+            if (maxSum < sum) {
+                maxSum = sum;
+            }
+        } else {
+
+            while (hash[nums[head]] > 1 && tail <= head) {
+                hash[nums[tail]]--;
+                sum -= nums[tail];
+
+                tail++;
+            }
+        }
+
+        head++;
+    }
+
+    return maxSum;
 }
 
 void doTest(int* nums, int numsSize, int expected) {
@@ -44,6 +75,9 @@ int main() {
 
     int nums2[] = {5,2,1,2,5,2,1,2,5};
     doTest(nums2, 9, 8);
+
+    int nums3[] = {10000,1,10000,1,1,1,1,1,1};
+    doTest(nums3, 9, 10001);
 
     return 0;
 }
