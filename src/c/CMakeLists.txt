@@ -9,6 +9,7 @@ add_executable(count_of_smaller_numbers_after_self sorting/315_count_of_smaller_
 
 add_executable(bsearch lib/utest.c lib/utest.h search/binary_search.c)
 
+add_executable(424_Longest_Repeating_Character_Replacement lib/utest.c lib/utest.h sliding/424_Longest_Repeating_Character_Replacement.c)
 add_executable(1297_Maximum_Number_of_Occurrences_of_a_Substring lib/utest.c lib/utest.h sliding/1297_Maximum_Number_of_Occurrences_of_a_Substring.c)
 add_executable(1695_Maximum_Erasure_Value lib/utest.c lib/utest.h sliding/1695_Maximum_Erasure_Value.c)
 add_executable(2269_k_beauty_of_a_number lib/utest.c lib/utest.h sliding/2269_k_beauty_of_a_number.c)
