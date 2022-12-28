@@ -16,6 +16,7 @@ add_executable(2269_k_beauty_of_a_number lib/utest.c lib/utest.h sliding/2269_k_
 add_executable(2379_minimum_recolors_wb lib/utest.c lib/utest.h sliding/2379_minimum_recolors_wb.c)
 
 
+add_executable(959_Regions_Cut_By_Slashes lib/utest.c lib/utest.h uf/959_Regions_Cut_By_Slashes.c)
 add_executable(1971_find_existing_path lib/utest.c lib/utest.h uf/1971_find_existing_path.c)
 
 
