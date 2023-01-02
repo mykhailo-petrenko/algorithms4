@@ -11,7 +11,20 @@ An island in grid2 is considered a sub-island if there is an island in grid1 tha
 Return the number of islands in grid2 that are considered sub-islands.
 
 Example 1:
-    Input: grid1 = [[1,1,1,0,0],[0,1,1,1,1],[0,0,0,0,0],[1,0,0,0,0],[1,1,0,1,1]], grid2 = [[1,1,1,0,0],[0,0,1,1,1],[0,1,0,0,0],[1,0,1,1,0],[0,1,0,1,0]]
+    Input: grid1 = [
+        [1,1,1,0,0],
+        [0,1,1,1,1],
+        [0,0,0,0,0],
+        [1,0,0,0,0],
+        [1,1,0,1,1]
+    ],
+    grid2 = [
+        [1,1,1,0,0],
+        [0,0,1,1,1],
+        [0,1,0,0,0],
+        [1,0,1,1,0],
+        [0,1,0,1,0]
+    ]
     Output: 3
     Explanation: In the picture above, the grid on the left is grid1 and the grid on the right is grid2.
     The 1s colored red in grid2 are those considered to be part of a sub-island. There are three sub-islands.
@@ -32,7 +45,48 @@ Constraints:
 #include <stdlib.h>
 #include "../lib/utest.h"
 
-int countSubIslands(int** grid1, int grid1Size, int* grid1ColSize, int** grid2, int grid2Size, int* grid2ColSize){
+void merge1(int *graph, int a, int b) {
+    while(graph[a] != a) a = graph[a];
+    while(graph[b] != b) b = graph[b];
+
+    if (a > b) {
+        graph[a] = b;
+    } else {
+        graph[b] = a;
+    }
+}
+
+int countSubIslands(int** grid1, int grid1Size, int* grid1ColSize, int** grid2, int grid2Size, int* grid2ColSize) {
+    int *graph1 = malloc(sizeof(int) * grid1Size * grid1Size);
+    int current, sibling;
+
+    for (int i = 0; i<grid1Size; i++) {
+        for (int j = 0; j<grid1Size; j++) {
+            current = i*grid1Size + j;
+
+            if (grid1[i][j] == 0) {
+                graph1[current] = -1;
+                continue;
+            }
+
+            graph1[current] = current;
+
+            // merge with up cell
+            if (i > 0 && grid1[i-1][j]==1) {
+                sibling = (i-1)*grid1Size + j;
+                merge1(graph1, current, sibling);
+            }
+
+            // merge with left cell
+            if (j > 0 && grid1[i][j-1]==1) {
+                sibling = i*grid1Size + j - 1;
+                merge1(graph1, current, sibling);
+            }
+        }
+    }
+
+    print_array(graph1, grid1Size * grid1Size);
+
     return 0;
 }
 
