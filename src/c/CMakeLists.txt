@@ -5,6 +5,8 @@ set(CMAKE_C_STANDARD 11)
 
 include_directories(lib)
 
+add_executable(test_json lib/utest.h lib/utest.c lib/json.h lib/json.c lib/test_json.c)
+
 add_executable(count_of_smaller_numbers_after_self sorting/315_count_of_smaller_numbers_after_self.c lib/utest.c lib/utest.h)
 
 add_executable(19_Remove_Nth_Node_From_End_of_List lib/utest.c lib/utest.h linked_list/19_Remove_Nth_Node_From_End_of_List.c)
