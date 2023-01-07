@@ -57,15 +57,37 @@ void assert_equals_array(const char* name, const int* expect, const int* real, i
     printf(ANSI_COLOR_GREEN "+ PASSED!\n" ANSI_RESET_ALL);
 }
 
-void print_array(const int* nums, int N) {
+/**
+ * print 1D Array
+ * @param nums {int *} pointer to the array
+ * @param length {int} array length
+ */
+void print_array(const int* nums, int length) {
     printf("[");
 
-    while(N-- > 0) {
+    while(length-- > 0) {
         printf("%d", *nums++);
-        if (N != 0) {
+        if (length != 0) {
             printf(", ");
         }
     }
 
     printf("]");
+}
+
+/**
+ * Print 2D Array
+ * @param nums {int**} pointer to the 2D array
+ * @param rows {int} rows count
+ * @param columns {int*} columns count per each row - columns[rowId]
+ */
+void print_2d_array(const int** nums, int rows, int *columns) {
+    printf("[");
+
+    for (int row=0; row < rows; row++) {
+        printf("\n");
+        print_array(nums[row], columns[row]);
+    }
+
+    printf("\n]\n");
 }

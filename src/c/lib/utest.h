@@ -15,6 +15,7 @@ void assert_equals_int(const char* name, const int* expect, const int* real);
 
 void assert_equals_array(const char* name, const int* expect, const int* real, int size);
 
-void print_array(const int* nums, int N);
+void print_array(const int* nums, int length);
+void print_2d_array(const int** nums, int rows, int *columns);
 
 #endif //C_UTEST_H
