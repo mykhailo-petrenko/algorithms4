@@ -5,6 +5,9 @@ set(CMAKE_C_STANDARD 11)
 
 include_directories(lib)
 
+add_executable(heap_min_in heap/heap_min_int.c)
+add_executable(heap_struct heap/heap_struct.c)
+
 add_executable(test_json lib/utest.h lib/utest.c lib/json.h lib/json.c lib/test_json.c)
 
 add_executable(count_of_smaller_numbers_after_self sorting/315_count_of_smaller_numbers_after_self.c lib/utest.c lib/utest.h)
