@@ -26,6 +26,7 @@ add_executable(2379_minimum_recolors_wb lib/utest.c lib/utest.h sliding/2379_min
 
 
 add_executable(959_Regions_Cut_By_Slashes lib/utest.c lib/utest.h uf/959_Regions_Cut_By_Slashes.c)
+add_executable(1584_Min_Cost_to_Connect_All_Points lib/utest.c lib/utest.h uf/1584_Min_Cost_to_Connect_All_Points.c)
 add_executable(1905_Count_Sub_Islands lib/utest.c lib/utest.h uf/1905_Count_Sub_Islands.c)
 add_executable(1971_find_existing_path lib/utest.c lib/utest.h uf/1971_find_existing_path.c)
 
