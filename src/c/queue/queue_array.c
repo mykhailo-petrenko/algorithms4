@@ -12,6 +12,12 @@ struct Queue {
     int * queue;
 };
 
+struct Queue * queue_create(int initialCapacity);
+void queue_resize(struct Queue * q, int factor);
+void enqueue(struct Queue * q, int el);
+int dequeue(struct Queue * q);
+int read_queue(struct Queue * q, int i);
+
 struct Queue * queue_create(int initialCapacity) {
     struct Queue * q = malloc(sizeof(struct Queue));
 
@@ -87,6 +93,9 @@ int main() {
     printf("Deq %d. Count: %d, Capacity: %d \n", dequeue(q), q->count, q->capacity);
     printf("Deq %d. Count: %d, Capacity: %d \n", dequeue(q), q->count, q->capacity);
 
+    queue_resize(q, 0);
+
+    printf("Resize to 0. Count: %d, Capacity: %d \n",  q->count, q->capacity);
 
     return 0;
 }

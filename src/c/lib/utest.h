@@ -18,4 +18,11 @@ void assert_equals_array(const char* name, const int* expect, const int* real, i
 void print_array(const int* nums, int length);
 void print_2d_array(const int** nums, int rows, int *columns);
 
+typedef struct {
+    int **arr;
+    int rowsSize;
+    int *columnsSize;
+} ArrayPointer;
+ArrayPointer * arrayToPointer(const int* in, const int rowNumbers, const int rowNumbers_1);
+
 #endif //C_UTEST_H

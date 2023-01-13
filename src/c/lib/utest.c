@@ -91,3 +91,23 @@ void print_2d_array(const int** nums, int rows, int *columns) {
 
     printf("\n]\n");
 }
+
+ArrayPointer * arrayToPointer(const int* in, const int rowNumbers, const int columnsNumber) {
+    ArrayPointer * pointer = malloc(sizeof(ArrayPointer));
+
+    pointer->arr = malloc(sizeof(int *) * rowNumbers);
+    pointer->rowsSize = rowNumbers;
+    pointer->columnsSize = malloc(sizeof(int) * rowNumbers);
+
+    for (unsigned r = 0; r < rowNumbers; ++r) {
+        pointer->arr[r] = malloc(sizeof(int) * columnsNumber);
+
+        for (unsigned c = 0; c < columnsNumber; ++c) {
+            pointer->arr[r][c] = in[r * columnsNumber + c];
+        }
+
+        pointer->columnsSize[r] = columnsNumber;
+    }
+
+    return pointer;
+}
