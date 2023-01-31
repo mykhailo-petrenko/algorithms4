@@ -89,57 +89,119 @@ class PQ {
     }
 }
 
+class Node {
+    constructor(id) {
+        this.id = id;
+        
+        this.visited = new Set();
+        this.visited.add(id);
+
+        this.path = 0;
+    }
+
+    siblings(graph) {
+        return graph[this.id];
+    }
+}
+
+class MyQueue {
+    constructor() {
+        this.array = [];
+    }
+
+    size() {
+        return this.array.length;
+    }
+
+    enqueue(value) {
+        this.array.push(value);
+    }
+
+    push(value) {
+        this.array.unshift(value);
+    }
+
+    dequeue() {
+        return this.array.shift();
+    }
+
+    clear() {
+        this.array.length = 0;
+    }
+}
+
 /**
  * @param {number[][]} graph
  * @return {number}
  */
 const shortestPathLength = function(graph) {
-    let len = Infinity;
     const N = graph.length;
-    const FULL_MASK = (1 << N) - 1;
 
-    const q = new PQ((a, b) => {
-        return a[1] - b[1];
-    });
+    const compare = (a, b) => {
+        let diff = 0;
 
-    const path = [];
-    for (let i=0; i<N;i++) {
-        path[i] = [];
-    }
+        diff = a.path - b.path;
+        
+
+        return diff;
+    };
+
+    let q = new PQ(compare);
+    let q2 = new PQ(compare);
+
+    let start = 0;
 
     for (let node = 0; node < N; node++) {
         if (graph[node].length === 1) {
-            q.enqueue([node, 1 << node]);
-            path[node][1 << node] = 0;
+            start = node;
+            q.enqueue(new Node(start));
+            // break;
         }
     }
 
     if (q.size() === 0) {
-        q.enqueue([0, 1]);
-        path[0][1] = 0;
+        q.enqueue(new Node(start));
     }
 
-    let nextVisited;
-    while (q.size() > 0) {
-        const [node, visited] = q.dequeue();
+    const solutions = new Array(N).fill(Infinity);
+    let len = 0;
+    let attempt = 0;
 
-        if (FULL_MASK === visited) {
-            len = Math.min(len, path[node][visited]);
+    while(q.size() > 0 || q2.size() > 0) {
+        const node = (q.size() > 0) ? q.dequeue() : q2.dequeue();
+
+        if (node.path > (node.visited.size * 1.5)) {
             continue;
         }
 
-        for (let next of graph[node]) {
-            nextVisited = visited | (1 << next);
-            if (path[next][nextVisited] === undefined) {
-                path[next][nextVisited] = Infinity;
+        if (node.visited.size === N) {
+            solutions[node.id] = Math.min(solutions[node.id], node.path);
+
+            // if (attempt === 0 && solutions[node.id] > N-1) {
+            //     q.clear();
+            //     q.enqueue(new Node(node.id));
+            //     attempt++;
+
+            //     continue;
+            // }
+            // continue;
+            break;
+        }
+
+        for (const sibling of node.siblings(graph)) {
+            const next = new Node(sibling);
+            const back = (node.visited.has(next.id)) ? 1 : 0;
+
+            for (const v of node.visited.values()) {
+                next.visited.add(v);
             }
-            
-            if ((path[node][visited] + 1) < path[next][nextVisited]) {
-                path[next][nextVisited] = path[node][visited] + 1;
-                q.enqueue([next, nextVisited]);
-            }
+
+            next.path = node.path + 1;
+            q.enqueue(next)
         }
     }
+// console.log(solutions);
+    len = solutions.reduce((prev, next) => Math.min(prev, next));
 
     return len;
 };

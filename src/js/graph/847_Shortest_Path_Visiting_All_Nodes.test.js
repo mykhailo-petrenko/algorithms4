@@ -53,7 +53,7 @@ test('[[1],[2],[3],[0]] -> 3', () => {
     expect(shortestPathLength(graph)).toEqual(expected);
 });
 
-test('[[1],[2],[3],[0]] -> 3', () => {
+test('[[1,2,3],[0,2,3],[0,1,3],[0,1,2]] -> 3', () => {
     const graph = [[1,2,3],[0,2,3],[0,1,3],[0,1,2]];
     const expected = 3;
 
@@ -67,12 +67,12 @@ test('[[1],[0,2,4],[1,3],[2],[1,5],[4]] -> 6', () => {
     expect(shortestPathLength(graph)).toEqual(expected);
 });
 
-// {
-//     const input = [[1,2,3,4,5,6,7,8,9],[0,2,3,4,5,6,7,8,9],[0,1,3,4,5,6,7,8,9],[0,1,2,4,5,6,7,8,9],[0,1,2,3,5,6,7,8,9],[0,1,2,3,4,6,7,8,9],[0,1,2,3,4,5,7,8,9],[0,1,2,3,4,5,6,8,9],[0,1,2,3,4,5,6,7,9,10],[0,1,2,3,4,5,6,7,8,11],[8],[9]];
-//     const expected = 11;
-//     test(JSON.stringify(input) + ' -> ' + expected, () => {
-//         const graph = input;
+{
+    const input = [[1,2,3,4,5,6,7,8,9],[0,2,3,4,5,6,7,8,9],[0,1,3,4,5,6,7,8,9],[0,1,2,4,5,6,7,8,9],[0,1,2,3,5,6,7,8,9],[0,1,2,3,4,6,7,8,9],[0,1,2,3,4,5,7,8,9],[0,1,2,3,4,5,6,8,9],[0,1,2,3,4,5,6,7,9,10],[0,1,2,3,4,5,6,7,8,11],[8],[9]];
+    const expected = 11;
+    test(JSON.stringify(input) + ' -> ' + expected, () => {
+        const graph = input;
    
-//         expect(shortestPathLength(graph)).toEqual(expected);
-//     });
-// }
+        expect(shortestPathLength(graph)).toEqual(expected);
+    });
+}
