@@ -9,6 +9,8 @@ add_executable(1137_Nth_Tribonacci lib/utest.h lib/utest.c dp/1137_Nth_Tribonacc
 
 add_executable(417_Pacific_Atlantic_Water_Flow lib/utest.h lib/utest.c graph/417_Pacific_Atlantic_Water_Flow.c)
 
+add_executable(706_Design_HashMap lib/utest.h lib/utest.c hash_map/706_Design_HashMap.c)
+
 add_executable(heap_min_in heap/heap_min_int.c)
 add_executable(heap_struct heap/heap_struct.c)
 
