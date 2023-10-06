@@ -5,6 +5,7 @@ set(CMAKE_C_STANDARD 11)
 
 include_directories(lib)
 
+add_executable(343_Integer_Break lib/utest.h lib/utest.c dp/343_Integer_Break.c)
 add_executable(1137_Nth_Tribonacci lib/utest.h lib/utest.c dp/1137_Nth_Tribonacci.c)
 
 add_executable(417_Pacific_Atlantic_Water_Flow lib/utest.h lib/utest.c graph/417_Pacific_Atlantic_Water_Flow.c)
