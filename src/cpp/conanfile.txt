@@ -2,6 +2,5 @@
 
 
 [generators]
-cmake_find_package
-txt
-cmake
+CMakeDeps
+CMakeToolchain

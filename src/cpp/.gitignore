@@ -1,2 +1,7 @@
 .idea/
 cmake-build-debug/
+build/
+CMakeUserPresets.json
+conan_provider.cmake
+conandata.yml
+conanfile.py
