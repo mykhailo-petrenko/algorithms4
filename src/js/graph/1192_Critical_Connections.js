@@ -1,6 +1,24 @@
 /**
  * 1192. Critical Connections in a Network
  */
+
+
+
+/**
+ * Return the all critical connections ("Bridges") in a Network
+ *
+ * @param {number} n
+ * @param {[number, number][]} connections
+ * @return {[number, number][]}
+ */
+export const criticalConnections = function(n, connections) {
+  // @TODO: minimum spanning tree
+  // @TODO: find loops (exclude edges which belongs to loop)
+  // @TODO: return the not-excluded edges - bridges/critical connections
+  return [];
+}
+
+
 function Node(id, prev) {
   this.id = id;
   this.prev = prev;
@@ -8,10 +26,10 @@ function Node(id, prev) {
 
 /**
  * @param {number} n
- * @param {number[][]} connections
- * @return {number[][]}
+ * @param {[number, number][]} connections
+ * @return {[number, number][]}
  */
-export const criticalConnections = function(n, connections) {
+export const criticalConnections_0_DFS = function(n, connections) {
   let graph = [];
 
   const CONNECTED = 1;

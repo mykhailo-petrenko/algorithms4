@@ -1,6 +1,7 @@
-import criticalConnections from './1192_Critical_Connections.js';
 import fs from 'node:fs';
 import readline from 'node:readline';
+
+import criticalConnections from './1192_Critical_Connections.js';
 
 class TestDataBuilder {
   _data = {};
@@ -82,7 +83,8 @@ describe('1192 Critical Connections', () => {
   });
 
   test('N=10000. Performance test', async () => {
-    const cases = await readGraphFromFile('../../data/my/10000-vertices-graph-for-critical-connections.txt');
+    const PATH_TO_NETWORK_CASES = '../../data/my/10000-vertices-graph-for-critical-connections.txt';
+    const cases = await readGraphFromFile(PATH_TO_NETWORK_CASES);
 
     for (let {n, connections, expected} of cases) {
       const actual = criticalConnections(n, connections);
