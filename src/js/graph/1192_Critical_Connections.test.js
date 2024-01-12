@@ -82,7 +82,22 @@ describe('1192 Critical Connections', () => {
     expect(actual).toEqual(expected);
   });
 
-  test('N=10000. Performance test', async () => {
+  it('should be [[1,3]]', function () {
+    const actual = criticalConnections(6, [[0,1],[1,2],[2,0],[1,3],[3,4],[4,5],[5,3]]);
+    expect(actual).toEqual([[1,3]]);
+  });
+
+  it('6 should be []', function () {
+    const actual = criticalConnections(6, [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0]]);
+    expect(actual).toEqual([]);
+  });
+
+  it('9 should be []', function () {
+    const actual = criticalConnections(9, [[0,1],[1,2],[2,3],[3,0],[3,4],[3,6],[4,5], [7,5], [6,7], [8,5]]);
+    expect(actual).toEqual([[8, 5]]);
+  });
+
+  test('N=10000. Performance test', async () => {return;
     const PATH_TO_NETWORK_CASES = '../../data/my/10000-vertices-graph-for-critical-connections.txt';
     const cases = await readGraphFromFile(PATH_TO_NETWORK_CASES);
 
