@@ -1,8 +1,8 @@
-import fs from 'node:fs';
-import readline from 'node:readline';
+import { readLinesInterface, readLinesIterator } from '../../../tools/readlines.js';
 
 import criticalConnections from './1192_Critical_Connections.js';
 import { UF } from './1192_Critical_Connections.js';
+import { puml } from '../../../tools/puml.js';
 
 class TestDataBuilder {
   _data = {};
@@ -41,12 +41,7 @@ class TestDataBuilder {
 }
 
 async function readGraphFromFile(path) {
-  const fileStream = fs.createReadStream(path);
-
-  const rl = readline.createInterface({
-    input: fileStream,
-    crlfDelay: Infinity
-  });
+  const readLine = readLinesInterface(path);
   // Note: we use the crlfDelay option to recognize all instances of CR LF
   // ('\r\n') in input.txt as a single line break.
 
@@ -54,7 +49,7 @@ async function readGraphFromFile(path) {
   const out = [];
 
   let n = 0;
-  for await (const line of rl) {
+  for await (const line of readLine) {
     n++;
     switch (n) {
       case 1: dataBuilder.setN(line); break;
@@ -74,6 +69,7 @@ describe('1192 Critical Connections', () => {
   test('Basic test #1', () => {
     const expected = [[1,3]];
     const actual = criticalConnections(4, [[0,1],[1,2],[2,0],[1,3]]);
+    // puml(4, [[0,1],[1,2],[2,0],[1,3]], './basic1.puml');
     expect(actual).toEqual(expected);
   });
 
@@ -93,19 +89,49 @@ describe('1192 Critical Connections', () => {
     expect(actual).toEqual([]);
   });
 
-  it('9 should be []', function () {
-    const actual = criticalConnections(9, [[0,1],[1,2],[2,3],[3,0],[3,4],[3,6],[4,5], [7,5], [6,7], [8,5]]);
+  it('9 should be [8,5]', function () {
+    const N = 9;
+    const actual = criticalConnections(N, [[0,1],[1,2],[2,3],[3,0],[3,4],[3,6],[4,5], [7,5], [6,7], [8,5]]);
+
     expect(actual).toEqual([[8, 5]]);
   });
 
-  test('N=10000. Performance test', async () => {return;
+  it('temp 1423', async () => {
+    const iterator = readLinesIterator('../../data/mediumG.txt');
+
+    const line = async () => await iterator.next();
+
+    const N = parseInt((await line()).value, 10);
+    const Nlines = parseInt((await line()).value, 10);
+
+    const edges = [];
+
+    while (true) {
+      const {value, done} = await line();
+
+      if (done) {
+        break;
+      }
+
+      const edge = value.split(' ').map((n) => parseInt(n, 10));
+      edges.push(edge);
+    }
+
+    // puml(N, edges, './mediumG.puml');
+    criticalConnections(N, edges);
+  });
+
+  xit('N=10000. Performance test', async () => {
     const PATH_TO_NETWORK_CASES = '../../data/my/10000-vertices-graph-for-critical-connections.txt';
     const cases = await readGraphFromFile(PATH_TO_NETWORK_CASES);
 
     for (let {n, connections, expected} of cases) {
+      // puml(n, connections, './n1000.puml');
       const actual = criticalConnections(n, connections);
       expect(actual).toEqual(expected);
     }
+
+
   });
 });
 

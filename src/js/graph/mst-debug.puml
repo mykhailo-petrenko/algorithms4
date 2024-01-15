@@ -1,0 +1,21 @@
+@startuml
+circle "0" as node0
+circle "1" as node1
+circle "2" as node2
+circle "3" as node3
+circle "4" as node4
+circle "5" as node5
+circle "6" as node6
+circle "7" as node7
+circle "8" as node8
+node0-[bold]-node1
+node1-[bold]-node2
+node2-[bold]-node3
+node3-[dotted]-node0
+node3-[bold]-node4
+node3-[bold]-node6
+node4-[bold]-node5
+node7-[bold]-node5
+node6-[dotted]-node7
+node8-[bold]-node5
+@enduml

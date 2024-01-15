@@ -1,13 +1,14 @@
 /**
  * 1192. Critical Connections in a Network
  */
+import { puml } from '../../../tools/puml.js';
 
 
 export function UF(n) {
   const parent = [];
   const rank = [];
 
-  for (let groupId=0; groupId<n; groupId++) {
+  for (let groupId = 0; groupId < n; groupId++) {
     parent[groupId] = groupId;
     rank[groupId] = 0;
   }
@@ -36,7 +37,7 @@ export function UF(n) {
 
   const debug = () => {
     const out = [];
-    for (let nodeId = 0; nodeId<n; nodeId++) {
+    for (let nodeId = 0; nodeId < n; nodeId++) {
       out.push(`${nodeId} (${rank[nodeId]}) -> ${parent[nodeId]}`);
     }
 
@@ -49,6 +50,7 @@ export function UF(n) {
     debug
   };
 }
+
 /**
  * Return the all critical connections ("Bridges") in a Network
  *
@@ -56,8 +58,51 @@ export function UF(n) {
  * @param {[number, number][]} connections
  * @return {[number, number][]}
  */
-export const criticalConnections = function(n, connections) {
+export const criticalConnections = function (n, connections) {
+  const CONNECTED = 1;
+  // const IN_CYCLE = 2;
+
   // @TODO: minimum spanning tree
+  const mst = [];
+
+  for (let r = 0; r < n; r++) {
+    mst[r] = [];
+  }
+
+  const setPath = (graph, a, b, value) => {
+    if (a < b) {
+      graph[b][a] = value;
+    } else {
+      graph[a][a] = value;
+    }
+  };
+
+  const getPath = (graph, a, b) => {
+    if (a < b) {
+      return graph[b][a];
+    } else {
+      return graph[a][b];
+    }
+  }
+
+  const {find, union} = new UF(n);
+
+  const _debug_connections = [];
+
+  for (let [a, b] of connections) {
+    if (find(a) !== find(b)) {
+      setPath(mst, a, b, CONNECTED);
+      union(a, b);
+
+      _debug_connections.push([a, b, 'bold']);
+    } else {
+      // skip
+      _debug_connections.push([a, b, 'dotted']);
+    }
+  }
+
+  puml(n, _debug_connections, './graph/mst-debug.puml');
+
   // @TODO: find loops (exclude edges which belongs to loop)
   // @TODO: return the not-excluded edges - bridges/critical connections
   return [];
@@ -74,7 +119,7 @@ function Node(id, prev) {
  * @param {[number, number][]} connections
  * @return {[number, number][]}
  */
-export const criticalConnections_0_DFS = function(n, connections) {
+export const criticalConnections_0_DFS = function (n, connections) {
   let graph = [];
 
   const CONNECTED = 1;
@@ -115,7 +160,7 @@ export const criticalConnections_0_DFS = function(n, connections) {
   const stack = [];
   stack.push(new Node(start, null));
 
-  while(stack.length > 0) {
+  while (stack.length > 0) {
     const current = stack.pop();
 
     // stack.push({isTask: true, visited: current.id});
@@ -150,7 +195,7 @@ export const criticalConnections_0_DFS = function(n, connections) {
 
     stack.push({isTask: true, visited: current.id});
 
-    for (let next=0; next<n; next++) {
+    for (let next = 0; next < n; next++) {
       // skip the previous connection
       if (next === current.prev?.id) {
         continue;
