@@ -3,7 +3,7 @@
  */
 
 
-function UF(n) {
+export function UF(n) {
   const parent = [];
   const rank = [];
 
@@ -13,7 +13,7 @@ function UF(n) {
   }
 
   const find = (a) => {
-    while (a === parent[a]) {
+    while (a !== parent[a]) {
       a = parent[a];
     }
 
@@ -34,9 +34,19 @@ function UF(n) {
     }
   };
 
+  const debug = () => {
+    const out = [];
+    for (let nodeId = 0; nodeId<n; nodeId++) {
+      out.push(`${nodeId} (${rank[nodeId]}) -> ${parent[nodeId]}`);
+    }
+
+    console.log(out.join('\n'));
+  };
+
   return {
     union,
     find,
+    debug
   };
 }
 /**

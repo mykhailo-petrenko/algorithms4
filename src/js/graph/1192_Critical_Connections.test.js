@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import readline from 'node:readline';
 
 import criticalConnections from './1192_Critical_Connections.js';
+import { UF } from './1192_Critical_Connections.js';
 
 class TestDataBuilder {
   _data = {};
@@ -106,4 +107,55 @@ describe('1192 Critical Connections', () => {
       expect(actual).toEqual(expected);
     }
   });
+});
+
+describe('1192 Critical Connections. UF', () => {
+  it('smoke test', () => {
+    const {union, find} = new UF(5);
+
+    expect(find(0)).toEqual(0);
+    expect(find(1)).toEqual(1);
+    expect(find(2)).toEqual(2);
+    expect(find(3)).toEqual(3);
+    expect(find(4)).toEqual(4);
+
+    union(1, 4);
+
+    expect(find(1)).toEqual(find(4));
+  });
+
+  it('worst case', () => {
+    const {union, find, debug} = new UF(5);
+
+    union(0,1);
+    union(1,2);
+    union(2,3);
+    union(3,4);
+
+    // debug();
+
+    expect(find(1)).toEqual(0);
+    expect(find(2)).toEqual(0);
+    expect(find(3)).toEqual(0);
+    expect(find(4)).toEqual(0);
+  });
+
+  it('check the rank', () => {
+    const {union, find, debug} = new UF(6);
+
+    union(0,1);
+    union(1,2);
+    union(3,4);
+    union(4,5);
+
+    union(0,3);
+
+    // debug();
+
+
+    expect(find(5)).toEqual(0);
+    expect(find(3)).toEqual(0);
+    expect(find(0)).toEqual(0);
+  });
+
 });
