@@ -21,6 +21,7 @@ add_executable(count_of_smaller_numbers_after_self sorting/315_count_of_smaller_
 
 add_executable(19_Remove_Nth_Node_From_End_of_List lib/utest.c lib/utest.h linked_list/19_Remove_Nth_Node_From_End_of_List.c)
 
+add_executable(1700_number_of_studends_unable_to_eat_lunch lib/utest.c lib/utest.h lib/json.h lib/json.c queue/1700_number_of_studends_unable_to_eat_lunch.c)
 add_executable(queue_array lib/utest.c lib/utest.h queue/queue_array.c)
 
 add_executable(bsearch lib/utest.c lib/utest.h search/binary_search.c)
