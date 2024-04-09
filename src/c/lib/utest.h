@@ -11,6 +11,13 @@
 
 void assert_equals_bool(const char* name, const bool* expect, const bool* real);
 
+/**
+ * Assert Equals int
+ *
+ * @param name {char*} String to show in test messate
+ * @param expect Expected result
+ * @param real Actual result
+ */
 void assert_equals_int(const char* name, const int* expect, const int* real);
 
 void assert_equals_array(const char* name, const int* expect, const int* real, int size);

@@ -5,6 +5,8 @@ set(CMAKE_C_STANDARD 11)
 
 include_directories(lib)
 
+add_executable(2073_Time_Needed_to_Buy_Tickets lib/utest.c lib/utest.h lib/json.h lib/json.c array/2073_Time_Needed_to_Buy_Tickets.c)
+
 add_executable(343_Integer_Break lib/utest.h lib/utest.c dp/343_Integer_Break.c)
 add_executable(1137_Nth_Tribonacci lib/utest.h lib/utest.c dp/1137_Nth_Tribonacci.c)
 
