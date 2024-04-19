@@ -7,12 +7,17 @@ import fs from 'node:fs';
  * @param n {number} Number of Nodes
  * @param edges {[number, number][]} Edges [from, to[, 'bold'|'dotted'|...]][]
  * @param outputFile {string} Path to target .puml file
+ * @param labels {string[]}
  */
-export function puml(n, edges, outputFile = undefined) {
+export function puml(n, edges, outputFile = undefined, labels = undefined) {
   const lines = ['@startuml'];
 
   for (let nodeId=0; nodeId < n; nodeId++) {
-    lines.push(`circle "${nodeId}" as node${nodeId}`);
+    let label = '' + nodeId;
+    if (labels && labels[nodeId]) {
+      label += ` [${labels[nodeId]}]`;
+    }
+    lines.push(`circle "${label}" as node${nodeId}`);
   }
 
   for (const [a, b, style] of edges) {

@@ -62,46 +62,120 @@ export const criticalConnections = function (n, connections) {
   const CONNECTED = 1;
   // const IN_CYCLE = 2;
 
-  // @TODO: minimum spanning tree
-  const mst = [];
+  const depth = [];
+  const lo = [];
 
+  const graph = [];
   for (let r = 0; r < n; r++) {
-    mst[r] = [];
+    graph[r] = [];
   }
 
   const setPath = (graph, a, b, value) => {
     if (a < b) {
       graph[b][a] = value;
     } else {
-      graph[a][a] = value;
+      graph[a][b] = value;
     }
   };
 
   const getPath = (graph, a, b) => {
     if (a < b) {
-      return graph[b][a];
+      return graph[b] ? graph[b][a] : 0;
     } else {
-      return graph[a][b];
+      return graph[a] ? graph[a][b] : 0;
+    }
+  }
+
+  const getConnections = function *(graph, a) {
+    for (let b = 0; b < n; b++) {
+      if (a === b) {
+        continue;
+      }
+
+      if (getPath(graph, a, b) === CONNECTED) {
+        yield b;
+      }
     }
   }
 
   const {find, union} = new UF(n);
-
+  const deferred_connections = [];
   const _debug_connections = [];
 
+  // Build MST
   for (let [a, b] of connections) {
     if (find(a) !== find(b)) {
-      setPath(mst, a, b, CONNECTED);
+      setPath(graph, a, b, CONNECTED);
       union(a, b);
 
       _debug_connections.push([a, b, 'bold']);
     } else {
       // skip
       _debug_connections.push([a, b, 'dotted']);
+      deferred_connections.push([a, b]);
     }
   }
 
-  puml(n, _debug_connections, './graph/mst-debug.puml');
+  // Set LongPath (depth in MST) from root (arbitrary node)
+  let roodGroupId = find(connections[0][0]);
+  depth[roodGroupId] = 1;
+  lo[roodGroupId] = 1;
+
+  let queue = [roodGroupId];
+  let visited = [];
+
+  while (queue.length > 0) {
+    const node = queue.pop();
+
+    if (visited[node]) {
+      continue;
+    }
+    visited[node] = true;
+
+    const level = depth[node]
+
+    for (let child of getConnections(graph, node)) {
+      if (visited[child]) {
+        continue;
+      }
+
+      depth[child] = level+1;
+      lo[child] = level+1;
+      queue.push(child);
+    }
+  }
+
+  // Add remaining connection to describe all graph edges
+  for (const [a, b] of deferred_connections) {
+    setPath(graph, a, b, CONNECTED);
+  }
+
+  queue = [roodGroupId];
+  visited = [];
+
+  while (queue.length > 0) {
+    const node = queue.pop();
+    visited[node] = true;
+
+    for (let child of getConnections(graph, node)) {
+      lo[node] = Math.min(lo[node], depth[child]);
+      if (visited[child]) {
+        // lo[node] = Math.min(lo[node], depth[child]);
+        continue;
+      }
+      // lo[node] = Math.min(lo[node], lo[child]);
+      queue.push(child);
+    }
+  }
+
+  const labels = [];
+  for (let nodeId=0; nodeId<n; nodeId++) {
+    if (!depth[nodeId]) {
+      continue;
+    }
+    labels[nodeId] = ''+depth[nodeId]+'/'+lo[nodeId];
+  }
+  puml(n, _debug_connections, './graph/mst-debug.puml', labels);
 
   // @TODO: find loops (exclude edges which belongs to loop)
   // @TODO: return the not-excluded edges - bridges/critical connections

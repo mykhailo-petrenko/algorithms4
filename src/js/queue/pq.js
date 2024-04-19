@@ -1,4 +1,4 @@
-// Pririty Q
+// Priority Queue
 class PQ {
     constructor(compare = null) {
         this.array = [];
