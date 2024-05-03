@@ -20,6 +20,15 @@ void assert_equals_bool(const char* name, const bool* expect, const bool* real);
  */
 void assert_equals_int(const char* name, const int* expect, const int* real);
 
+/**
+ * Assert Equals Long
+ *
+ * @param name {char*} String to show in test messate
+ * @param expect Expected result
+ * @param real Actual result
+ */
+void assert_equals_long(const char* name, const long long * expect, const long long * real);
+
 void assert_equals_array(const char* name, const int* expect, const int* real, int size);
 
 void print_array(const int* nums, int length);
