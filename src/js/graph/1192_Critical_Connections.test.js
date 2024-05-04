@@ -93,7 +93,7 @@ describe('1192 Critical Connections', () => {
     const N = 9;
     const actual = criticalConnections(N, [[0,1],[1,2],[2,3],[3,0],[3,4],[3,6],[4,5], [7,5], [6,7], [8,5]]);
 
-    expect(actual).toEqual([[8, 5]]);
+    expect(actual).toEqual([[5, 8]]);
   });
 
   it('temp 1423', async () => {
@@ -116,7 +116,6 @@ describe('1192 Critical Connections', () => {
       const edge = value.split(' ').map((n) => parseInt(n, 10));
       edges.push(edge);
     }
-
     // puml(N, edges, './mediumG.puml');
     criticalConnections(N, edges);
   });
@@ -130,7 +129,6 @@ describe('1192 Critical Connections', () => {
       const actual = criticalConnections(n, connections);
       expect(actual).toEqual(expected);
     }
-
 
   });
 });

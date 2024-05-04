@@ -1,5 +1,29 @@
 /**
- * 1192. Critical Connections in a Network
+# LeetCode. 1192. Critical Connections in a Network (https://leetcode.com/problems/critical-connections-in-a-network/description/)
+
+There are n servers numbered from 0 to n - 1 connected by undirected server-to-server connections
+  forming a network where connections[i] = [ai, bi] represents a connection between servers ai and bi.
+Any server can reach other servers directly or indirectly through the network.
+
+A critical connection is a connection that, if removed, will make some servers unable to reach some other server.
+
+Return all critical connections in the network in any order.
+
+## Example 1:
+  Input: n = 4, connections = [[0,1],[1,2],[2,0],[1,3]]
+  Output: [[1,3]]
+  Explanation: [[3,1]] is also accepted.
+
+## Example 2:
+  Input: n = 2, connections = [[0,1]]
+  Output: [[0,1]]
+
+## Constraints:
+- 2 <= n <= 10^5
+- n - 1 <= connections.length <= 10^5
+- 0 <= ai, bi <= n - 1
+- ai != bi
+- There are no repeated connections.
  */
 import { puml } from '../../../tools/puml.js';
 
@@ -59,127 +83,69 @@ export function UF(n) {
  * @return {[number, number][]}
  */
 export const criticalConnections = function (n, connections) {
-  const CONNECTED = 1;
-  // const IN_CYCLE = 2;
+  // Tarjans bridge finding algorithm
 
-  const depth = [];
-  const lo = [];
+  // Time of entry into node (via dfs)
+  const tin = new Uint32Array(n);
+  // Minimum of (tin[node], tin[back_edge_node], lo[child])
+  const lo = new Uint32Array(n);
 
   const graph = [];
   for (let r = 0; r < n; r++) {
     graph[r] = [];
   }
 
-  const setPath = (graph, a, b, value) => {
-    if (a < b) {
-      graph[b][a] = value;
-    } else {
-      graph[a][b] = value;
-    }
-  };
-
-  const getPath = (graph, a, b) => {
-    if (a < b) {
-      return graph[b] ? graph[b][a] : 0;
-    } else {
-      return graph[a] ? graph[a][b] : 0;
-    }
-  }
-
-  const getConnections = function *(graph, a) {
-    for (let b = 0; b < n; b++) {
-      if (a === b) {
-        continue;
-      }
-
-      if (getPath(graph, a, b) === CONNECTED) {
-        yield b;
-      }
-    }
-  }
-
-  const {find, union} = new UF(n);
-  const deferred_connections = [];
-  const _debug_connections = [];
-
-  // Build MST
   for (let [a, b] of connections) {
-    if (find(a) !== find(b)) {
-      setPath(graph, a, b, CONNECTED);
-      union(a, b);
-
-      _debug_connections.push([a, b, 'bold']);
-    } else {
-      // skip
-      _debug_connections.push([a, b, 'dotted']);
-      deferred_connections.push([a, b]);
-    }
+    graph[a].push(b);
+    graph[b].push(a);
   }
 
-  // Set LongPath (depth in MST) from root (arbitrary node)
-  let roodGroupId = find(connections[0][0]);
-  depth[roodGroupId] = 1;
-  lo[roodGroupId] = 1;
+  let visited = new Uint8Array(n);
+  let level = 0;
 
-  let queue = [roodGroupId];
-  let visited = [];
+  const bridge = [];
 
-  while (queue.length > 0) {
-    const node = queue.pop();
+  const dfs = (node, parent) => {
+    visited[node] = 1;
 
-    if (visited[node]) {
-      continue;
-    }
-    visited[node] = true;
+    tin[node] = level;
+    lo[node] = level;
 
-    const level = depth[node]
+    level++;
 
-    for (let child of getConnections(graph, node)) {
-      if (visited[child]) {
+    for (let next of graph[node]) {
+      if (next === parent) {
         continue;
       }
 
-      depth[child] = level+1;
-      lo[child] = level+1;
-      queue.push(child);
-    }
-  }
+      if (visited[next]===1) {
+        // Back edge
+        lo[node] = Math.min(lo[node], tin[next]);
+      } else {
+        dfs(next, node);
 
-  // Add remaining connection to describe all graph edges
-  for (const [a, b] of deferred_connections) {
-    setPath(graph, a, b, CONNECTED);
-  }
+        lo[node] = Math.min(lo[node], lo[next]);
 
-  queue = [roodGroupId];
-  visited = [];
-
-  while (queue.length > 0) {
-    const node = queue.pop();
-    visited[node] = true;
-
-    for (let child of getConnections(graph, node)) {
-      lo[node] = Math.min(lo[node], depth[child]);
-      if (visited[child]) {
-        // lo[node] = Math.min(lo[node], depth[child]);
-        continue;
+        if (lo[next] > tin[node]) {
+          bridge.push([node, next]);
+        }
       }
-      // lo[node] = Math.min(lo[node], lo[child]);
-      queue.push(child);
+
     }
   }
 
-  const labels = [];
-  for (let nodeId=0; nodeId<n; nodeId++) {
-    if (!depth[nodeId]) {
-      continue;
-    }
-    labels[nodeId] = ''+depth[nodeId]+'/'+lo[nodeId];
-  }
-  puml(n, _debug_connections, './graph/mst-debug.puml', labels);
+  dfs(0, -1);
 
-  // @TODO: find loops (exclude edges which belongs to loop)
-  // @TODO: return the not-excluded edges - bridges/critical connections
-  return [];
+  // const labels = [];
+  // for (let nodeId=0; nodeId<n; nodeId++) {
+  //   if (!tin[nodeId]) {
+  //     continue;
+  //   }
+  //   labels[nodeId] = ''+tin[nodeId]+'/'+lo[nodeId];
+  // }
+  // puml(n, connections, './graph/mst-debug.puml', labels);
+
+  return bridge;
 }
 
 
