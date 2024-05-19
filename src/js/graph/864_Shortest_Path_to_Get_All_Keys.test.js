@@ -17,18 +17,61 @@ describe('864. Shortest Path to Get All Keys', () => {
     expect(actual).toEqual(-1);
   });
 
-  it('should be fast enough', () => {
-    const actual = shortestPathAllKeys(["..#....##.","....d.#.D#","#...#.c...","..##.#..a.","...#....##","#....b....",".#..#.....","..........",".#..##..A.",".B..C.#..@"]);
-    expect(actual).toEqual(19);
-  });
-
   it('should pass Case 19', () => {
     const actual = shortestPathAllKeys(["@fedcbBCDEFaA"]);
     expect(actual).toEqual(11);
   });
-  it('should pass Case 20', () => {
-    const actual = shortestPathAllKeys([".##..##...","...#.#.#B#",".#.#......",".#....#...","...###...C","#.##..#.#.","...A.c....","#..a.@..##","##..#.....","..#....b.."]);
+
+  it('should rediscover same path when got the key', () => {
+    const actual = shortestPathAllKeys([
+      "@...a",
+      ".###A",
+      "b.BCc"
+    ]);
     expect(actual).toEqual(10);
   });
 
+  it('should pass Case 20', () => {
+    const actual = shortestPathAllKeys([
+      ".##..##...",
+      "...#.#.#B#",
+      ".#.#......",
+      ".#....#...",
+      "...###...C",
+      "#.##..#.#.",
+      "...A.c....",
+      "#..a.@..##",
+      "##..#.....",
+      "..#....b.."
+    ]);
+    expect(actual).toEqual(10);
+  });
+
+  it('should pass Case 21', () => {
+    const actual = shortestPathAllKeys([
+      "Dd#b@",
+      ".fE.e",
+      "##.B.",
+      "#.cA.",
+      "aF.#C"
+    ]);
+    expect(actual).toEqual(14);
+  });
+
+  it('should be fast enough', () => {
+    const actual = shortestPathAllKeys(
+      [
+        "..#....##.",
+        "....d.#.D#",
+        "#...#.c...",
+        "..##.#..a.",
+        "...#....##",
+        "#....b....",
+        ".#..#.....",
+        "..........",
+        ".#..##..A.",
+        ".B..C.#..@"
+      ]);
+    expect(actual).toEqual(19);
+  });
 });

@@ -62,22 +62,18 @@ var shortestPathAllKeys = function(grid) {
   const KEYS = ['a','b','c','d','e','f'];
   const LOCKS = ['A','B','C','D','E','F'];
   const isValid = (r, c) => {
-    if (r <0 || c <0 || r >= ROWS || c >= COLS) {
-      return false;
-    }
-
-    return g[r][c] !== '#';
+    return (r >= 0 && c >= 0 && r < ROWS && c < COLS && (g[r][c] !== '#'));
   };
   const isKey = (c) => {
-    return KEYS.indexOf(c)+1;
+    return KEYS.indexOf(c);
   };
 
   const isLock = (c) => {
-    return LOCKS.indexOf(c)+1;
+    return LOCKS.indexOf(c);
   };
 
   const start = [];
-  const _keys = [];
+  let keysLength = 0;
 
   const g = [];
   let i =0;
@@ -88,60 +84,53 @@ var shortestPathAllKeys = function(grid) {
       if (g[i][k] === '@') {
         start[0] = i;
         start[1] = k;
-      } else if (isKey(g[i][k])) {
-        _keys.push([i, k]);
+      } else if (isKey(g[i][k]) !== -1) {
+        keysLength++;
       }
     }
 
     i++;
   }
 
-  const q = new MinPriorityQueue();
-  q.enqueue([...start, 0, new Set(), new Set()], 0);
+  const visited = new Set();
+  const q = [];
+  q.push([...start, 0, 0]);
 
-  while (q.size() > 0) {
-    let [r, c, path, wallet, visitedPrev] = q.dequeue().element;
-    const k = isKey(g[r][c]);
+  const TARGET = (1 << keysLength) - 1;
+
+  const attemptNext = (r, c, path, wallet) => {
     const l = isLock(g[r][c]);
 
-    if (visitedPrev.has(`${r}-${c}`)) {
-      continue;
-    }
-    const visited = new Set(visitedPrev);
-    visited.add(`${r}-${c}`);
-
-    if (k !== 0) {
-      if (!wallet.has(k)) {
-        // pick up the key
-        wallet = new Set(wallet);
-        wallet.add(k);
-
-        if (wallet.size === _keys.length) {
-          return path;
-        }
-
-        visited.clear();
-      } else {
-        continue;
-      }
-    } else if (l !== 0) {
-      if (!wallet.has(l)) {
-        continue;
-      }
+    if (l !== -1 && 0 === (wallet & (1 << l))) {
+      return;
     }
 
-    if (isValid(r+1, c)) {
-      q.enqueue([r+1, c, path+1, wallet, visited], path); //visited.size * N + path);
+    const k = isKey(g[r][c]);
+    let nextWallet = wallet;
+    if (k !== -1) {
+      nextWallet = nextWallet | (1 << k);
     }
-    if (isValid(r, c+1)) {
-      q.enqueue([r, c+1, path+1, wallet, visited], path); //visited.size * N + path);
+
+    if (visited.has(`${r}-${c}-${nextWallet}`)) {
+      return;
     }
-    if (isValid(r, c-1)) {
-      q.enqueue([r, c-1, path+1, wallet, visited], path); //visited.size * N + path);
+
+    visited.add(`${r}-${c}-${nextWallet}`);
+
+    q.push([r, c, path+1, nextWallet]);
+  };
+
+  while (q.length > 0) {
+    const [r, c, path, wallet] = q.shift();
+
+    if (wallet === TARGET) {
+      return path;
     }
-    if (isValid(r-1, c)) {
-      q.enqueue([r-1, c, path+1, wallet, visited], path); //visited.size * N + path);
-    }
+
+    isValid(r-1, c) && attemptNext(r-1, c, path, wallet); // up
+    isValid(r, c+1) && attemptNext(r, c+1, path, wallet); // right
+    isValid(r+1, c) && attemptNext(r+1, c, path, wallet); // down
+    isValid(r, c-1) && attemptNext(r, c-1, path, wallet); // left
   }
 
   return -1;
