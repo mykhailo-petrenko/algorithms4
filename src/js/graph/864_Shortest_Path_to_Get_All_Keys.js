@@ -48,7 +48,6 @@ Return the lowest number of moves to acquire all keys. If it is impossible, retu
 
  */
 
-import { MinPriorityQueue } from '@datastructures-js/priority-queue';
 
 /**
  * @param {string[]} grid
