@@ -28,13 +28,79 @@
  *
  * */
 
-
 /**
  * @param {string} s
  * @param {string[]} wordDict
  * @return {string[]}
  */
 var wordBreak = function(s, wordDict) {
+  const source = [];
+
+  for (const word of wordDict) {
+    let shift = 0;
+    while (shift < s.length) {
+      const pos = s.indexOf(word, shift);
+
+      if (pos === -1) {
+        break;
+      }
+
+      source.push({
+        word,
+        start: pos,
+        end: pos + word.length
+      });
+
+      shift = pos + 1;
+    }
+  }
+
+  source.sort((a, b) => a.start - b.start);
+
+  const wordLen = (set) => {
+    return set
+      .map((w) => w.end - w.start)
+      .reduce((a, b) => a + b, 0);
+  };
+
+  let out = [];
+  let N = source.length;
+
+  const dfs = (set, start) => {
+    if (wordLen(set) === s.length) {
+      out.push(set.map(w => w.word).join(' '));
+      return;
+    }
+    if (start === N) {
+      return;
+    }
+
+    for (let i = start; i<N; i++) {
+      if (set.length === 0 && source[i].start === 0) {
+        set.push(source[i]);
+      } else if (set.length > 0 && source[i].start === set[set.length-1].end) {
+        set.push(source[i]);
+      } else {
+        continue;
+      }
+
+      dfs(set, i+1);
+
+      set.pop();
+    }
+  }
+
+  dfs([],0);
+
+  return out;
+};
+
+/**
+ * @param {string} s
+ * @param {string[]} wordDict
+ * @return {string[]}
+ */
+var wordBreakRecursive = function(s, wordDict) {
   let out = [];
 
   let source = [];
