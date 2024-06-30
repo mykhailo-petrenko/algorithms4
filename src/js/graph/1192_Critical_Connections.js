@@ -27,54 +27,6 @@ Return all critical connections in the network in any order.
  */
 import { puml } from '../../../tools/puml.js';
 
-
-export function UF(n) {
-  const parent = [];
-  const rank = [];
-
-  for (let groupId = 0; groupId < n; groupId++) {
-    parent[groupId] = groupId;
-    rank[groupId] = 0;
-  }
-
-  const find = (a) => {
-    while (a !== parent[a]) {
-      a = parent[a];
-    }
-
-    return a;
-  };
-
-  const union = (a, b) => {
-    a = find(a);
-    b = find(b);
-
-    if (rank[a] > rank[b]) {
-      parent[b] = a;
-    } else if (rank[a] < rank[b]) {
-      parent[a] = b;
-    } else {
-      rank[a]++;
-      parent[b] = a;
-    }
-  };
-
-  const debug = () => {
-    const out = [];
-    for (let nodeId = 0; nodeId < n; nodeId++) {
-      out.push(`${nodeId} (${rank[nodeId]}) -> ${parent[nodeId]}`);
-    }
-
-    console.log(out.join('\n'));
-  };
-
-  return {
-    union,
-    find,
-    debug
-  };
-}
-
 /**
  * Return the all critical connections ("Bridges") in a Network
  *
