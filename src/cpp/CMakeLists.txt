@@ -6,6 +6,10 @@ set(CMAKE_CXX_STANDARD 17)
 #find_package(glm REQUIRED)
 #find_package(spdlog REQUIRED)
 
+add_executable(1395_Count_Number_of_Teams
+        dp/1395_Count_Number_of_Teams.cpp
+)
+
 add_executable(1334_Find_the_City_With_the_Smallest_Number_of_Neighbors_at_a_Threshold_Distance
         graph/1334_Find_the_City_With_the_Smallest_Number_of_Neighbors_at_a_Threshold_Distance.cpp)
 
