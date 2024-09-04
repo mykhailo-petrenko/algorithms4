@@ -5,6 +5,8 @@
 [![C++](doc/C++-logo.png)](src/cpp)
 [![Java](doc/Java-logo.png)](src/main)
 
+## Lists to practice
+[Dynamic Programming problems to practice](doc/DP.md)
 
 ## Union Find
 [Union Find experiments](src/main/java/uf)
