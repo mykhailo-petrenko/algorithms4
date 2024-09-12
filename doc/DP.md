@@ -4,9 +4,9 @@
 - [x] https://leetcode.com/problems/climbing-stairs/
 - [x] https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
 - [x] https://leetcode.com/problems/min-cost-climbing-stairs/
-- [ ] https://leetcode.com/problems/divisor-game/
-- [ ] https://leetcode.com/problems/decode-ways/
-- [ ] https://leetcode.com/problems/unique-binary-search-trees/
+- [x] https://leetcode.com/problems/divisor-game/
+- [x] https://leetcode.com/problems/decode-ways/
+- [x] https://leetcode.com/problems/unique-binary-search-trees/
 - [ ] https://leetcode.com/problems/house-robber/
 - [ ] https://leetcode.com/problems/perfect-squares/
 - [ ] https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/
