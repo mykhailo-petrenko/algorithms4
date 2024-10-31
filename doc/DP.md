@@ -7,12 +7,12 @@
 - [x] https://leetcode.com/problems/divisor-game/
 - [x] https://leetcode.com/problems/decode-ways/
 - [x] https://leetcode.com/problems/unique-binary-search-trees/
-- [ ] https://leetcode.com/problems/house-robber/
-- [ ] https://leetcode.com/problems/perfect-squares/
+- [x] https://leetcode.com/problems/house-robber/
+- [x] https://leetcode.com/problems/perfect-squares/
 - [ ] https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/
 - [ ] https://leetcode.com/problems/coin-change/
 - [ ] https://leetcode.com/problems/counting-bits/
-- [ ] https://leetcode.com/problems/integer-break/
+- [x] https://leetcode.com/problems/integer-break/
 - [ ] https://leetcode.com/problems/count-numbers-with-unique-digits/
 - [ ] https://leetcode.com/problems/wiggle-subsequence/
 - [ ] https://leetcode.com/problems/partition-equal-subset-sum/
@@ -53,7 +53,7 @@
 - [ ] https://leetcode.com/problems/reducing-dishes/
 
 ## 3. Multi Dimensions DP
-- [ ] https://leetcode.com/problems/triangle/
+- [x] https://leetcode.com/problems/triangle/
 - [ ] https://leetcode.com/problems/combination-sum-iv/
 - [ ] https://leetcode.com/problems/out-of-boundary-paths/
 - [ ] https://leetcode.com/problems/knight-probability-in-chessboard/
@@ -122,7 +122,7 @@
 - [ ] https://leetcode.com/problems/numbers-with-repeated-digits/
 
 ## 7. DP on Trees
-- [ ] https://leetcode.com/problems/unique-binary-search-trees-ii/
+- [x] https://leetcode.com/problems/unique-binary-search-trees-ii/
 - [ ] https://leetcode.com/problems/house-robber-iii/
 - [ ] https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/
 - [ ] https://leetcode.com/problems/linked-list-in-binary-tree/
@@ -132,7 +132,7 @@
 - [ ] https://leetcode.com/problems/number-of-ways-to-reorder-array-to-get-same-bst/
 
 ## 8. String DP
-- [ ] https://leetcode.com/problems/is-subsequence/
+- [x] https://leetcode.com/problems/is-subsequence/
 - [ ] https://leetcode.com/problems/palindrome-partitioning/
 - [ ] https://leetcode.com/problems/palindrome-partitioning-ii/
 - [ ] https://leetcode.com/problems/word-break/
