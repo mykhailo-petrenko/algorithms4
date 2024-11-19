@@ -9,11 +9,11 @@
 - [x] https://leetcode.com/problems/unique-binary-search-trees/
 - [x] https://leetcode.com/problems/house-robber/
 - [x] https://leetcode.com/problems/perfect-squares/
-- [ ] https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/
-- [ ] https://leetcode.com/problems/coin-change/
-- [ ] https://leetcode.com/problems/counting-bits/
+- [x] https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/
+- [x] https://leetcode.com/problems/coin-change/
+- [x] https://leetcode.com/problems/counting-bits/
 - [x] https://leetcode.com/problems/integer-break/
-- [ ] https://leetcode.com/problems/count-numbers-with-unique-digits/
+- [x] https://leetcode.com/problems/count-numbers-with-unique-digits/
 - [ ] https://leetcode.com/problems/wiggle-subsequence/
 - [ ] https://leetcode.com/problems/partition-equal-subset-sum/
 - [ ] https://leetcode.com/problems/maximum-length-of-pair-chain/
