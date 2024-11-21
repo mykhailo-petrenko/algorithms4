@@ -40,7 +40,7 @@
 - [ ] https://leetcode.com/problems/coin-change-2/
 
 ## 2. Knapsack
-- [ ] https://leetcode.com/problems/house-robber-ii/
+- [x] https://leetcode.com/problems/house-robber-ii/
 - [ ] https://leetcode.com/problems/ones-and-zeroes/
 - [ ] https://leetcode.com/problems/target-sum/
 - [ ] https://leetcode.com/problems/shopping-offers/
@@ -160,8 +160,8 @@
 
 ## 10. Classic DPs
 ### A. Kadane's Algorithm
-- [ ] https://leetcode.com/problems/maximum-subarray/
-- [ ] https://leetcode.com/problems/maximum-product-subarray/
+- [x] https://leetcode.com/problems/maximum-subarray/
+- [x] https://leetcode.com/problems/maximum-product-subarray/
 - [ ] https://leetcode.com/problems/bitwise-ors-of-subarrays/
 - [ ] https://leetcode.com/problems/longest-turbulent-subarray/
 - [ ] https://leetcode.com/problems/maximum-subarray-sum-with-one-deletion/
@@ -192,9 +192,9 @@
 - [ ] https://leetcode.com/problems/make-array-strictly-increasing/
 
 ### D. 2D Grid Traversal
-- [ ] https://leetcode.com/problems/unique-paths/
-- [ ] https://leetcode.com/problems/unique-paths-ii/
-- [ ] https://leetcode.com/problems/minimum-path-sum/
+- [x] https://leetcode.com/problems/unique-paths/
+- [x] https://leetcode.com/problems/unique-paths-ii/
+- [x] https://leetcode.com/problems/minimum-path-sum/
 - [ ] https://leetcode.com/problems/maximum-non-negative-product-in-a-matrix/
 - [ ] https://leetcode.com/problems/where-will-the-ball-fall/
 - [ ] https://leetcode.com/problems/dungeon-game/
@@ -223,7 +223,7 @@
 - [ ] https://leetcode.com/problems/get-the-maximum-score/
 
 ### F. Hashmap (SubArray)
-- [ ] https://leetcode.com/problems/continuous-subarray-sum/
+- [x] https://leetcode.com/problems/continuous-subarray-sum/
 - [ ] https://leetcode.com/problems/find-two-non-overlapping-sub-arrays-each-with-target-sum/
 - [ ] https://leetcode.com/problems/maximum-number-of-non-overlapping-subarrays-with-sum-equals-target/
 
@@ -237,11 +237,11 @@
 - [ ] https://leetcode.com/problems/k-inverse-pairs-array/
 
 ## 13. Graph DP
-- [ ] https://leetcode.com/problems/cheapest-flights-within-k-stops/
+- [x] https://leetcode.com/problems/cheapest-flights-within-k-stops/
 - [ ] https://leetcode.com/problems/find-the-shortest-superstring/
 
 ## 14. Memoization
-- [ ] https://leetcode.com/problems/minimum-jumps-to-reach-home/
+- [x] https://leetcode.com/problems/minimum-jumps-to-reach-home/
 - [ ] https://leetcode.com/problems/scramble-string/
 - [ ] https://leetcode.com/problems/tiling-a-rectangle-with-the-fewest-squares/
 - [ ] https://leetcode.com/problems/number-of-ways-to-stay-in-the-same-place-after-some-steps/
@@ -252,7 +252,7 @@
 - [ ] https://leetcode.com/problems/kth-ancestor-of-a-tree-node/
 
 ## 16. Math
-- [ ] https://leetcode.com/problems/ugly-number-ii/
+- [x] https://leetcode.com/problems/ugly-number-ii/
 - [ ] https://leetcode.com/problems/count-sorted-vowel-strings/
 - [ ] https://leetcode.com/problems/race-car/
 - [ ] https://leetcode.com/problems/super-egg-drop/
