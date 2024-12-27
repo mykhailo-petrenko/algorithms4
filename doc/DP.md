@@ -14,8 +14,8 @@
 - [x] https://leetcode.com/problems/counting-bits/
 - [x] https://leetcode.com/problems/integer-break/
 - [x] https://leetcode.com/problems/count-numbers-with-unique-digits/
-- [ ] https://leetcode.com/problems/wiggle-subsequence/
-- [ ] https://leetcode.com/problems/partition-equal-subset-sum/
+- [x] https://leetcode.com/problems/wiggle-subsequence/
+- [x] https://leetcode.com/problems/partition-equal-subset-sum/
 - [ ] https://leetcode.com/problems/maximum-length-of-pair-chain/
 - [ ] https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/
 - [ ] https://leetcode.com/problems/delete-and-earn/
