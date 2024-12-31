@@ -103,7 +103,7 @@
 - [ ] https://leetcode.com/problems/stone-game-v/
 
 ## 5. bit DP
-- [ ] https://leetcode.com/problems/can-i-win/
+- [x] https://leetcode.com/problems/can-i-win/
 - [ ] https://leetcode.com/problems/partition-to-k-equal-sum-subsets/
 - [ ] https://leetcode.com/problems/stickers-to-spell-word/
 - [ ] https://leetcode.com/problems/shortest-path-visiting-all-nodes/
