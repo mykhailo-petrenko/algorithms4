@@ -23,5 +23,10 @@ add_executable(433_Minimum_Genetic_Mutations
 add_executable(912_Sort_an_Array
         sorting/912_Sort_an_Array.cpp)
 
+add_executable(uf_test
+        uf/UF.cpp
+        uf/UF.hpp
+        uf/uf_test.cpp)
+
 #target_link_libraries(${EXE} glm::glm spdlog::spdlog)
 
