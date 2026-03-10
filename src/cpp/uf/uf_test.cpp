@@ -2,6 +2,7 @@
 // Created by Mykhailo Petrenko on 05/03/2026.
 //
 
+#include <iostream>
 #include <assert.h>
 
 #include "UF.hpp"
@@ -33,7 +34,9 @@ void uf_smoke_test() {
 }
 
 int main() {
+    std::cout << "UF test" << std::endl;
     uf_smoke_test();
+    std::cout << "uf_smoke_test passed" << std::endl;
 
     return 0;
 }

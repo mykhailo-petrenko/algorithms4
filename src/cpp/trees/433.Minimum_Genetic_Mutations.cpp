@@ -2,6 +2,7 @@
 // Created by Mykhailo Petrenko on 06/03/2024.
 //
 #include <string>
+#include <vector>
 
 using namespace std;
 

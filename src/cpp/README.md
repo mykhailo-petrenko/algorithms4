@@ -21,4 +21,7 @@ brew install cmake
 
 conan profile detect --force
 conan install . --output-folder=build --build=missing
+cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=/Users/mykhailo/projects/training/algorithms4/src/cpp/build/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Release
+cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=src/cpp/build/conan_toolchain.cmake -DCMAKE_BUILD_TYPE=Debug
+cmake --build build
 ```
