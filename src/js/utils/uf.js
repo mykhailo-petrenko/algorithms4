@@ -5,10 +5,10 @@
  * - Are this two nodes belong to the same group?
  *
  * @param {number} n Nodes count
- * @returns {{union: (number, number) => void, group: (number) => void, entities: number[], debug: () => void}}
+ * @returns {{add: (number, number) => void, union: (number, number) => void, connected: (number, number) => boolean, group: (number) => void, entities: number[], debug: () => void}}
  * @constructor
  */
-function UF(n) {
+export function UF(n) {
     const parent = [];
     const rank = [];
 
@@ -39,6 +39,13 @@ function UF(n) {
         }
     };
 
+    const connected = (a, b) => {
+        a = find(a);
+        b = find(b);
+
+        return (a === b);
+    };
+
     const debug = () => {
         const out = [];
         for (let nodeId = 0; nodeId < n; nodeId++) {
@@ -50,7 +57,10 @@ function UF(n) {
 
     return {
         union,
+        add: union,
+        find,
         group: find,
+        connected,
         entities: parent,
         debug,
     };
