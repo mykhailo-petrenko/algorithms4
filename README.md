@@ -13,7 +13,10 @@
 [Dynamic Programming problems to practice](doc/DP.md)
 
 ## Union Find
-[Union Find experiments](src/main/java/uf)
+
+- [C Union Find](src/c/uf)
+- [C++ Union Find](src/cpp/uf)
+- [Java Union Find experiments](src/main/java/uf)
 
 ## Sorting
 [Sorting experiments](src/main/java/sorting)

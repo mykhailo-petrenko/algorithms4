@@ -21,3 +21,17 @@ queue_pop(q);
 queue_destroy(q);
 ```
 
+### UF
+
+[Implementation UF](uf/uf.c)
+
+Usage:
+```c
+struct UF * uf =  uf_create(INITIAL_CAPACITY);
+
+// Add connection
+uf_add(uf, a, b);
+
+// Check if the nodes are connected (1 - connected, 0 - not connected)
+uf_connected(uf, a, b)
+```

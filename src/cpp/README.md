@@ -1,5 +1,21 @@
 # Algorithms and coding problems C++ practice playground
 
+## Utils and Helpers (to DRY)
+
+### UF
+[Implementation UF](uf/UF.hpp)
+
+Usage:
+```c
+UF uf = UF(INITIAL_CAPACITY);
+
+// Add connection
+uf.add(a, b);
+
+// Check if the nodes are connected
+uf.connected(a, b)
+```
+
 ## Leetcode tips
 This disables the synchronization between the C and C++ standard streams. 
 Then unties `cin` from `cout` and `cout` from `cin`.
