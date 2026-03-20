@@ -16,6 +16,7 @@
 
 - [C Union Find](src/c/uf)
 - [C++ Union Find](src/cpp/uf)
+- [JavaScript Union Find](src/js/uf)
 - [Java Union Find experiments](src/main/java/uf)
 
 ## Sorting
