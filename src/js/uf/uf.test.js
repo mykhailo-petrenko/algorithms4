@@ -27,4 +27,24 @@ describe('UF', () => {
     expect(uf.connected(7, 8)).toBeFalsy();
     expect(uf.connected(2, 3)).toBeFalsy();
   });
+
+  it('groups count', () => {
+    const uf = new UF(4);
+
+    expect(uf.groupsCount()).toBe(4);
+
+    uf.add(0,1);
+    uf.add(2,3);
+
+    expect(uf.groupsCount()).toBe(2);
+
+    uf.add(1,3);
+
+    expect(uf.groupsCount()).toBe(1);
+
+    uf.add(0,1);
+    uf.add(2,3);
+
+    expect(uf.groupsCount()).toBe(1);
+  });
 });

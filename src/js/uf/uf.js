@@ -5,12 +5,21 @@
  * - Are this two nodes belong to the same group?
  *
  * @param {number} n Nodes count
- * @returns {{add: (number, number) => void, union: (number, number) => void, connected: (number, number) => boolean, group: (number) => void, entities: number[], debug: () => void}}
+ * @returns {{
+ *      add: (number, number) => void,
+ *      union: (number, number) => void,
+ *      connected: (number, number) => boolean,
+ *      find: (number) => number,
+ *      group: (number) => number,
+ *      groupsCount: () => number,
+ *      entities: number[], debug: () => void
+ * }}
  * @constructor
  */
 export function UF(n) {
     const parent = [];
     const rank = [];
+    let groupsCount = n;
 
     for (let groupId = 0; groupId < n; groupId++) {
         parent[groupId] = groupId;
@@ -29,14 +38,21 @@ export function UF(n) {
         a = find(a);
         b = find(b);
 
-        if (rank[a] > rank[b]) {
-            parent[b] = a;
-        } else if (rank[a] < rank[b]) {
-            parent[a] = b;
-        } else {
-            rank[a]++;
-            parent[b] = a;
+        // Already the same group - do nothing,
+        if (a === b) {
+            return;
         }
+
+        // merge group with a fewer members into more crowded group
+        if (rank[a] < rank[b]) {
+            parent[a] = b;
+            rank[b] = rank[b] + rank[a];
+        } else {
+            parent[b] = a;
+            rank[a] = rank[a] + rank[b];
+        }
+
+        groupsCount--;
     };
 
     const connected = (a, b) => {
@@ -62,6 +78,7 @@ export function UF(n) {
         group: find,
         connected,
         entities: parent,
+        groupsCount: () => groupsCount,
         debug,
     };
 }

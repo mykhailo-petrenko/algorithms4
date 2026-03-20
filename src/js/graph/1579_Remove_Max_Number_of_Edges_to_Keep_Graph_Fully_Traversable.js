@@ -39,7 +39,7 @@
  * - All tuples (typei, ui, vi) are distinct.
  */
 
-import UF from "../utils/uf.js";
+import UF from "../uf/uf.js";
 
 /**
  * @param {number} n
